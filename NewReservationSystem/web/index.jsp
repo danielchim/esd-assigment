@@ -4,7 +4,7 @@
 <head>
     <title>SB Admin 2 - Dashboard</title>
 
-    <jsp:include page="content/headconfigs.jsp" />
+    <jsp:include page="/content/headconfigs.jsp" />
 </head>
 
 <body id="page-top">
@@ -12,7 +12,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        <jsp:include page="content/sidebar.jsp" />
+        <jsp:include page="/content/sidebar.jsp" />
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -20,7 +20,7 @@
             <!-- Main Content -->
             <div id="content">
 
-                <jsp:include page="content/topbar.jsp" />
+                <jsp:include page="/content/topbar.jsp" />
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -36,7 +36,7 @@
                     <div class="row">
 
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-3 col-md-6 mb-4 btn">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -54,7 +54,7 @@
                         </div>
 
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-3 col-md-6 mb-4 btn">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -72,7 +72,7 @@
                         </div>
 
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-3 col-md-6 mb-4 btn">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -101,7 +101,7 @@
                         </div>
 
                         <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-3 col-md-6 mb-4 btn">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -356,7 +356,7 @@
             </div>
             <!-- End of Main Content -->
 
-            <jsp:include page="content/footer.jsp" />
+            <jsp:include page="/content/footer.jsp" />
 
         </div>
         <!-- End of Content Wrapper -->
@@ -384,7 +384,7 @@
         </div>
     </div>
     
-    <jsp:include page="content/addins.jsp" />
+    <jsp:include page="/content/addins.jsp" />
 
 </body>
 
