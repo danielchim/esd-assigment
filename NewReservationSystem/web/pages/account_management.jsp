@@ -8,7 +8,7 @@
 </head>
 
 <body id="page-top">
-
+    
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -42,26 +42,40 @@
                                             <input type="text" class="form-control" id="inputKey" />
                                         </div>
                                     </div>
-                                    <div class="col-md-3 p-4">
+                                    <div class="col-md-2 p-4">
                                         <div class="form-group">
                                             <label for="inputAva">Status</label>
                                             <select id="inputAva" class="form-control">
                                                 <option selected value="">Choose...</option>
                                                 <option>Restricted</option>
+                                                <option>Overdue</option>
                                                 <option>Active</option>
                                                 <option>Hidden</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 p-4">
+                                    <div class="col-md-2 p-4">
                                         <div class="form-group">
-                                            <label for="inputAva">Type</label>
-                                            <select id="inputAva" class="form-control">
+                                            <label for="inputType">Type</label>
+                                            <select id="inputType" class="form-control">
                                                 <option selected value="">Choose...</option>
                                                 <option>Student</option>
                                                 <option>Technician</option>
                                                 <option>Senior Technician</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 p-4">
+                                        <div class="form-group">
+                                            <label for="inputRange">Overdue Count Range</label>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <input type="text" id="inputRangeS" class="form-control" placeholder="From" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input type="text" id="inputRangeE" class="form-control" placeholder="To" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -91,12 +105,15 @@
                         <!-- Content Row -->
                         <div class="row m-4">
                             <table class="table table-striped">
-                                <th>Record ID</th>
-                                <th>Equip ID</th>
-                                <th>Equip Name</th>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Tel</th>
+                                <th>E-mail</th>
                                 <th>Status</th>
-                                <th>Start Date</th>
-                                <th>Due Date</th>
+                                <th>Type</th>
+                                <th>Register Date</th>
+                                <th>Overdue Count</th>
                                 <th>Actions</th>
                             </table>
                         </div>
