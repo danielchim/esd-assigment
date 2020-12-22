@@ -9,9 +9,7 @@
 
 <body id="page-top">
     <jsp:useBean id="userBean" class="res.bean.UserBean" scope="page" />
-    <%
-        
-    %>
+    
     <!-- Page Wrapper -->
     <div id="wrapper">
 

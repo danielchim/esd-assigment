@@ -11,3 +11,10 @@
 
 <!-- Custom styles for this template-->
 <link href="/NewReservationSystem/css/sb-admin-2.min.css" rel="stylesheet">
+<%
+    if(session.getAttribute("userInfo") == null){
+        RequestDispatcher rd = request.getRequestDispatcher("/login");
+        request.setAttribute("action","");
+        rd.forward(request, response);
+    }
+%>
