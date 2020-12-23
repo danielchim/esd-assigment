@@ -113,7 +113,7 @@ public class InventoryController extends HttpServlet {
     
     public void doSearch(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ArrayList<EquipBean> ebs = equipDB.queryEquip();
-        request.setAttribute("resultset", ebs);
+        request.setAttribute("equipList", ebs);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/inventory_management.jsp");
         rd.forward(request, response);
     }

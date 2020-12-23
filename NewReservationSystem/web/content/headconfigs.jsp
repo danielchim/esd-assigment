@@ -13,7 +13,7 @@
 <link href="/NewReservationSystem/css/sb-admin-2.min.css" rel="stylesheet">
 <%
     if(session.getAttribute("userInfo") == null){
-        RequestDispatcher rd = request.getRequestDispatcher("/login");
+        RequestDispatcher rd = request.getRequestDispatcher("/main");
         session.setAttribute("originUrl", request.getRequestURL());
         rd.forward(request, response);
     }

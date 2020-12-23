@@ -21,7 +21,7 @@ import res.db.UserDB;
  *
  * @author erd25
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/login"})
+@WebServlet(name = "LoginController", urlPatterns = {"/main"})
 public class LoginController extends HttpServlet {
 
     private UserDB db;
@@ -107,6 +107,9 @@ public class LoginController extends HttpServlet {
             session.setAttribute("userInfo", bean);
             if(session.getAttribute("originUrl") != null){
                 targetURL = session.getAttribute("originUrl").toString().substring(43);
+                if(targetURL.equals("")){
+                    targetURL = "index.jsp";
+                }
             }else{
                 targetURL = "index.jsp";
             }

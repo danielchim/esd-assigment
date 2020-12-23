@@ -7,11 +7,11 @@
     <jsp:include page="/content/headconfigs.jsp" />
     <%@page import="res.bean.EquipBean, java.util.ArrayList" %>
     <%!
-        ArrayList<EquipBean> resultset = null;
+        ArrayList<EquipBean> equipList = null;
     %>
     <%
-        if(request.getAttribute("resultset") != null){
-            resultset = (ArrayList<EquipBean>)request.getAttribute("result");
+        if(request.getAttribute("equipList") != null){
+            equipList = (ArrayList<EquipBean>)request.getAttribute("equipList");
         }
     %>
 </head>
@@ -99,21 +99,21 @@
                                 <th>Description</th>
                                 <th>Actions</th>
                                 <%
-                                    if(resultset.size() > 0){
-                                        for(EquipBean data : resultset){
-                                            out.println("<tr>");
-                                            out.println("<td>" + data.getEquipID() + "</td>");
-                                            out.println("<td>" + data.getEquipName() + "</td>");
-                                            out.println("<td>" + "</td>");
-                                            out.println("<td>" + "</td>");
-                                            out.println("<td>" + "</td>");
-                                            out.println("<td>" + "</td>");
-                                            out.println("<td>" + data.getDescription() +"</td>");
-                                            out.println("<td>" + "</td>");
-                                        }
-                                    }else{
-                                        out.println("<tr><td colspan='8'>No data<td></tr>");
-                                    }
+//                                    if(equipList.size() > 0){
+////                                        for(EquipBean data : resultset){
+////                                            out.println("<tr>");
+////                                            out.println("<td>" + data.getEquipID() + "</td>");
+////                                            out.println("<td>" + data.getEquipName() + "</td>");
+////                                            out.println("<td>" + "</td>");
+////                                            out.println("<td>" + "</td>");
+////                                            out.println("<td>" + "</td>");
+////                                            out.println("<td>" + "</td>");
+////                                            out.println("<td>" + data.getDescription() +"</td>");
+////                                            out.println("<td>" + "</td>");
+////                                        }
+//                                    }else{
+////                                        out.println("<tr><td colspan='8'>No data<td></tr>");
+//                                    }
                                 %>
                             </table>
                         </div>
