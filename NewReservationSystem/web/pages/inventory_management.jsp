@@ -99,21 +99,21 @@
                                 <th>Description</th>
                                 <th>Actions</th>
                                 <%
-//                                    if(equipList.size() > 0){
-////                                        for(EquipBean data : resultset){
-////                                            out.println("<tr>");
-////                                            out.println("<td>" + data.getEquipID() + "</td>");
-////                                            out.println("<td>" + data.getEquipName() + "</td>");
-////                                            out.println("<td>" + "</td>");
-////                                            out.println("<td>" + "</td>");
-////                                            out.println("<td>" + "</td>");
-////                                            out.println("<td>" + "</td>");
-////                                            out.println("<td>" + data.getDescription() +"</td>");
-////                                            out.println("<td>" + "</td>");
-////                                        }
-//                                    }else{
-////                                        out.println("<tr><td colspan='8'>No data<td></tr>");
-//                                    }
+                                    if(equipList.size() > 0){
+                                        for(EquipBean data : equipList){
+                                            out.println("<tr>");
+                                            out.println("<td>" + data.getEquipID() + "</td>");
+                                            out.println("<td>" + data.getEquipName() + "</td>");
+                                            out.println("<td>" + "</td>");
+                                            out.println("<td>" + "</td>");
+                                            out.println("<td>" + "</td>");
+                                            out.println("<td>" + "</td>");
+                                            out.println("<td>" + data.getDescription() +"</td>");
+                                            out.println("<td>" + "</td>");
+                                        }
+                                    }else{
+                                        out.println("<tr><td colspan='8'>No data<td></tr>");
+                                    }
                                 %>
                             </table>
                         </div>
