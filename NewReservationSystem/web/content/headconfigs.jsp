@@ -14,7 +14,7 @@
 <%
     if(session.getAttribute("userInfo") == null){
         RequestDispatcher rd = request.getRequestDispatcher("/login");
-        request.setAttribute("action","");
+        session.setAttribute("originUrl", request.getRequestURL());
         rd.forward(request, response);
     }
 %>

@@ -5,6 +5,15 @@
     <title>SB Admin 2 - Dashboard</title>
 
     <jsp:include page="/content/headconfigs.jsp" />
+    <%@page import="res.bean.EquipBean, java.util.ArrayList" %>
+    <%!
+        ArrayList<EquipBean> resultset = null;
+    %>
+    <%
+        if(request.getAttribute("resultset") != null){
+            resultset = (ArrayList<EquipBean>)request.getAttribute("result");
+        }
+    %>
 </head>
 
 <body id="page-top">
@@ -83,10 +92,29 @@
                             <table class="table table-striped">
                                 <th>Equip ID</th>
                                 <th>Equip Name</th>
+                                <th>Quantity</th>
                                 <th>Status</th>
                                 <th>Start Date</th>
                                 <th>Due Date</th>
+                                <th>Description</th>
                                 <th>Actions</th>
+                                <%
+                                    if(resultset.size() > 0){
+                                        for(EquipBean data : resultset){
+                                            out.println("<tr>");
+                                            out.println("<td>" + data.getEquipID() + "</td>");
+                                            out.println("<td>" + data.getEquipName() + "</td>");
+                                            out.println("<td>" + "</td>");
+                                            out.println("<td>" + "</td>");
+                                            out.println("<td>" + "</td>");
+                                            out.println("<td>" + "</td>");
+                                            out.println("<td>" + data.getDescription() +"</td>");
+                                            out.println("<td>" + "</td>");
+                                        }
+                                    }else{
+                                        out.println("<tr><td colspan='8'>No data<td></tr>");
+                                    }
+                                %>
                             </table>
                         </div>
                     </div>

@@ -105,7 +105,11 @@ public class LoginController extends HttpServlet {
             UserBean bean = db.queryUserByEmail(email);
             // store the userInfo to the session
             session.setAttribute("userInfo", bean);
-            targetURL = "index.jsp";
+            if(session.getAttribute("originUrl") != null){
+                targetURL = session.getAttribute("originUrl").toString().substring(43);
+            }else{
+                targetURL = "index.jsp";
+            }
         }else{
             // login failed
             targetURL = "login.jsp?fail=failed";

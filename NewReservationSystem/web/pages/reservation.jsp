@@ -89,7 +89,9 @@
                                 <th>Equip ID</th>
                                 <th>Equip Name</th>
                                 <th>Availability</th>
+                                <th>Available Quantity</th>
                                 <th>Available Date</th>
+                                <th>Description</th>
                                 <th>Actions</th>
                             </table>
                         </div>

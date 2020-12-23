@@ -27,7 +27,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Record</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Records</h1>
                     </div>
 
                     <div class="container-fluid card rounded border shadow mt-3 mb-3 p-0">
