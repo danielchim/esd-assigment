@@ -77,8 +77,8 @@ public class InventoryController extends HttpServlet {
         }
         if("search".equals(action)){
             doSearch(request, response);
-        }else if("logout".equals(action)){
-            
+        }else if("create".equals(action)){
+            doCreate(request, response);
         }else{
             response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
         }
@@ -116,6 +116,16 @@ public class InventoryController extends HttpServlet {
         request.setAttribute("equipList", ebs);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/inventory_management.jsp");
         rd.forward(request, response);
+    }
+    
+    public void doCreate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int equipID = equipDB.getPossibleID();
+        equipDB.insertEquip(equipID, request.getParameter("ename"), request.getParameter("edesc"));
+        equipDB.insertInventory(equipID, Integer.parseInt(request.getParameter("eq")));
+        if(request.getParameter("edisa") != null){
+            equipDB.insertDisaEquip(equipID);
+        }
+        response.sendRedirect("/NewReservationSystem/Inventory");
     }
 
 }
