@@ -183,7 +183,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <form method="POST" action="/NewReservationSystem/login">
+                <form method="POST" action="/NewReservationSystem/main">
                     <input type="hidden" name="action" value="logout" />
                     <input type="submit" value="Logout" class="btn btn-primary" />
                 </form>

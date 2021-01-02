@@ -106,7 +106,7 @@ public class LoginController extends HttpServlet {
             // store the userInfo to the session
             session.setAttribute("userInfo", bean);
             if(session.getAttribute("originUrl") != null){
-                targetURL = session.getAttribute("originUrl").toString().substring(43);
+                targetURL = session.getAttribute("originUrl").toString();
                 if(targetURL.equals("")){
                     targetURL = "index.jsp";
                 }
@@ -118,7 +118,7 @@ public class LoginController extends HttpServlet {
             targetURL = "login.jsp?fail=failed";
         }
         RequestDispatcher rd;
-        rd = getServletContext().getRequestDispatcher("/" + targetURL);
+        rd = getServletContext().getRequestDispatcher(targetURL);
         rd.forward(request, response);
     }
     
