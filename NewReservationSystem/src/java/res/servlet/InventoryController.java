@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import res.bean.EquipBean;
+import res.db.DBFactory;
 import res.db.EquipDB;
 
 /**

@@ -18,26 +18,11 @@ import res.bean.EquipBean;
  *
  * @author erd25
  */
-public class EquipDB {
-    private String dbUrl = "";
-    private String dbUser = "";
-    private String dbPassword = "";
-    
+public class EquipDB extends DBFactory{
     public EquipDB(String dbUrl, String dbUser, String dbPassword){
-        this.dbUrl = dbUrl;
-        this.dbUser = dbUser;
-        this.dbPassword = dbPassword;
+        super(dbUrl, dbUser , dbPassword);
     }
-    
-    public Connection getConnection() throws SQLException, IOException{
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-        }catch(ClassNotFoundException e){
-            e.printStackTrace();
-        }
-        return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-    }
-    
+
     public boolean insertEquip(String equipID, String equipName, String description){
         Connection conn = null;
         PreparedStatement pStmnt = null;

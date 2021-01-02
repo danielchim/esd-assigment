@@ -13,33 +13,18 @@ import res.bean.UserBean;
  *
  * @author erd25
  */
-public class UserDB {
-    private String dbUrl = "";
-    private String dbUser = "";
-    private String dbPassword = "";
-    
+public class UserDB extends DBFactory{
     public UserDB(String dbUrl, String dbUser, String dbPassword){
-        this.dbUrl = dbUrl;
-        this.dbUser = dbUser;
-        this.dbPassword = dbPassword;
+        super(dbUrl,dbUser, dbPassword);
     }
-    
-    public Connection getConnection() throws SQLException, IOException{
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-        }catch(ClassNotFoundException e){
-            e.printStackTrace();
-        }
-        return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-    }
-    
+
     public boolean isValidUser(String email, String pwd){
         Connection conn = null;
         PreparedStatement pStmnt = null;
         boolean isValid = false;
         try{
             conn = getConnection();
-            String preQueryStatement = "SELECT * FROM USERINFO WHERE email = ? and password = ?";
+            String preQueryStatement = "SELECT * FROM USERINFO WHERE email = ? and password = ? and email <> 'defaultUser'";
             pStmnt = conn.prepareStatement(preQueryStatement);
             pStmnt.setString(1, email);
             pStmnt.setString(2, pwd);

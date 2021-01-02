@@ -2,7 +2,7 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/NewReservationSystem/index.jsp">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${pageContext.request.contextPath}/index.jsp">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
@@ -14,7 +14,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="/NewReservationSystem/index.jsp">
+        <a class="nav-link" href="${pageContext.request.contextPath}/index.jsp">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -37,9 +37,9 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Borrowing:</h6>
-                <a class="collapse-item" href="/NewReservationSystem/pages/reservation.jsp">Equipment reservation</a>
-                <a class="collapse-item" href="/NewReservationSystem/pages/record.jsp">Records</a>
-                <a class="collapse-item" href="cards.html">Lookup overdues</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/reservation">Equipment reservation</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/pages/record.jsp">Records</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/cards.html">Lookup overdues</a>
             </div>
         </div>
     </li>

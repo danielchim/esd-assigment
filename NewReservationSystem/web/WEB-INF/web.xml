@@ -16,6 +16,6 @@
     </context-param>
     <context-param>
         <param-name>dbPassword</param-name>
-        <param-value></param-value>
+        <param-value>Nerish12945</param-value>
     </context-param>
 </web-app>
