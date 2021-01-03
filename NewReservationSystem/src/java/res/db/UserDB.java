@@ -127,11 +127,11 @@ public class UserDB {
             rs = pStmnt.executeQuery();
             if(rs.next()){
                 ub = new UserBean();
-                ub.setUserID(rs.getString(1));
+                ub.setUserID(rs.getInt(1));
                 ub.setFirstName(rs.getString(2));
                 ub.setLastName(rs.getString(3));
-                ub.setTel(rs.getString(5));
-                ub.setEmail(rs.getString(6));
+                ub.setEmail(rs.getString(5));
+                ub.setTel(rs.getString(6));
                 ub.setType(rs.getString(7));
                 ub.setRegisterDate(rs.getDate(8));
             }

@@ -79,6 +79,10 @@ public class InventoryController extends HttpServlet {
             doSearch(request, response);
         }else if("create".equals(action)){
             doCreate(request, response);
+        }else if("edit".equals(action)){
+            doEdit(request, response);
+        }else if("delete".equals(action)){
+            doDel(request, response);
         }else{
             response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
         }
@@ -112,7 +116,33 @@ public class InventoryController extends HttpServlet {
     
     
     public void doSearch(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        ArrayList<EquipBean> ebs = equipDB.queryEquip();
+        ArrayList<EquipBean> ebs;
+        String keyword = request.getParameter("s-keyword");
+        String status = request.getParameter("s-status");
+        if(request.getParameter("dataact") != null){
+            if(request.getParameter("dataact").equals("editdata")){
+                request.setAttribute("dataact", "editdata");
+                request.setAttribute("editID", request.getParameter("editID"));
+            }else if(request.getParameter("dataact").equals("deldata")){
+                request.setAttribute("dataact", "deldata");
+                request.setAttribute("delID", request.getParameter("delID"));
+            }
+        }
+        
+        if((keyword == null || keyword.equals("")) && (status == null || status.equals(""))){
+            ebs = equipDB.queryEquip();
+        }else{
+            if((keyword != null || !keyword.equals("")) && (status == null || status.equals(""))){
+                // case: only keyword
+                ebs = equipDB.searchEquip(keyword, null);
+            }else if((keyword == null || keyword.equals("")) && (status != null || !status.equals(""))){
+                // case: only status
+                ebs = equipDB.searchEquip(status, null);
+            }else{
+                // case: both keyword and status
+                ebs = equipDB.searchEquip(keyword, status);
+            }
+        }
         request.setAttribute("equipList", ebs);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/inventory_management.jsp");
         rd.forward(request, response);
@@ -126,6 +156,32 @@ public class InventoryController extends HttpServlet {
             equipDB.insertDisaEquip(equipID);
         }
         response.sendRedirect("/NewReservationSystem/Inventory");
+    }
+    
+    public void doEdit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int equipID = Integer.parseInt(request.getParameter("editID"));
+        String equipName = request.getParameter("ename");
+        int quantity = Integer.parseInt(request.getParameter("eq"));
+        String description = request.getParameter("edesc");
+        boolean disabled = request.getParameter("edisa") != null;
+        EquipBean eb = new EquipBean();
+        eb.setEquipID(equipID);
+        eb.setEquipName(equipName);
+        eb.setQuantity(quantity);
+        eb.setDescription(description);
+        if(disabled){
+            eb.setStatus("Disabled");
+        }
+        if(equipDB.updateEquip(eb)){
+            response.sendRedirect("/NewReservationSystem/Inventory");
+        }
+    }
+    
+    public void doDel(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int equipID = Integer.parseInt(request.getParameter("delID"));
+        if(equipDB.delEquip(equipID)){
+            response.sendRedirect("/NewReservationSystem/Inventory");
+        }
     }
 
 }

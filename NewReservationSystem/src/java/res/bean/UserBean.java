@@ -12,7 +12,7 @@ import java.sql.Date;
  * @author erd25
  */
 public class UserBean implements Serializable {
-    private String userID;
+    private int userID;
     private String firstName;
     private String lastName;
     private String tel;
@@ -23,7 +23,7 @@ public class UserBean implements Serializable {
     
     
     public UserBean(){}
-    public UserBean(String userID, String firstName, String lastName, String tel, String email, String type, Date registerDate){
+    public UserBean(int userID, String firstName, String lastName, String tel, String email, String type, Date registerDate){
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -33,7 +33,7 @@ public class UserBean implements Serializable {
         this.registerDate = registerDate;
     }
     
-    public String getUserID(){ return userID; }
+    public int getUserID(){ return userID; }
     public String getFirstName(){ return firstName; }
     public String getLastName(){ return lastName; }
     public String getTel(){ return tel; }
@@ -41,7 +41,7 @@ public class UserBean implements Serializable {
     public String getType(){ return type; }
     public Date getRegisterDate(){ return registerDate; }
     
-    public void setUserID(String userID){ this.userID = userID; }
+    public void setUserID(int userID){ this.userID = userID; }
     public void setFirstName(String firstName){ this.firstName = firstName; }
     public void setLastName(String lastName){ this.lastName = lastName; }
     public void setTel(String tel){ this.tel = tel; }
