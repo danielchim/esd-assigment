@@ -166,7 +166,7 @@ public class AccountController extends HttpServlet {
         String type = request.getParameter("utype");
         String fname = request.getParameter("ufname");
         String lname = request.getParameter("ulname");
-        String tel = request.getParameter("tel");
+        String tel = request.getParameter("utel");
         String status = "";
         boolean isDisabled = request.getParameter("udisa") != null;
         if(isDisabled){
