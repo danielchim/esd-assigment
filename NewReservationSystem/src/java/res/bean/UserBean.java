@@ -19,11 +19,12 @@ public class UserBean implements Serializable {
     private String email;
     private String type;
     private Date registerDate;
+    private int overdueCount;
     
     
     
     public UserBean(){}
-    public UserBean(int userID, String firstName, String lastName, String tel, String email, String type, Date registerDate){
+    public UserBean(int userID, String firstName, String lastName, String tel, String email, String type, Date registerDate, int overdueCount){
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,6 +32,7 @@ public class UserBean implements Serializable {
         this.email = email;
         this.type = type;
         this.registerDate = registerDate;
+        this.overdueCount = overdueCount;
     }
     
     public int getUserID(){ return userID; }
@@ -40,6 +42,7 @@ public class UserBean implements Serializable {
     public String getEmail(){ return email; }
     public String getType(){ return type; }
     public Date getRegisterDate(){ return registerDate; }
+    public int getOverdueCount(){ return overdueCount; }
     
     public void setUserID(int userID){ this.userID = userID; }
     public void setFirstName(String firstName){ this.firstName = firstName; }
@@ -48,5 +51,6 @@ public class UserBean implements Serializable {
     public void setEmail(String email){ this.email = email; }
     public void setType(String type){ this.type = type; }
     public void setRegisterDate(Date registerDate){ this.registerDate = registerDate; }
+    public void setOverdueCount(int overdueCount){ this.overdueCount = overdueCount; }
     
 }

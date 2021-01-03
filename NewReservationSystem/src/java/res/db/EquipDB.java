@@ -265,7 +265,7 @@ public class EquipDB extends DBFactory{
                 }else if(eb.getAvaQuantity() > 0){
                     eb.setStatus("Available");
                 }else{
-                    eb.setStatus("Occupied");
+                    eb.setStatus("Unavailable");
                 }
             }
             pStmnt.close();
