@@ -116,29 +116,43 @@ public class AccountController extends HttpServlet {
         ArrayList<UserBean> ubs;
         String keyword = request.getParameter("s-keyword");
         String status = request.getParameter("s-status");
-        if(request.getParameter("dataact") != null){
-            if(request.getParameter("dataact").equals("editdata")){
-                request.setAttribute("dataact", "editdata");
-                request.setAttribute("editID", request.getParameter("editID"));
-            }else if(request.getParameter("dataact").equals("deldata")){
-                request.setAttribute("dataact", "deldata");
-                request.setAttribute("delID", request.getParameter("delID"));
+        String type = request.getParameter("s-type");
+        String sOdCount0 = request.getParameter("s-odCount0");
+        String sOdCount1 = request.getParameter("s-odCount1");
+        int odCount0 = 0;
+        int odCount1 = -1;
+        if(request.getParameter("udataact") != null){
+            if(request.getParameter("udataact").equals("editdata")){
+                request.setAttribute("udataact", "editdata");
+                request.setAttribute("ueditID", request.getParameter("ueditID"));
+            }else if(request.getParameter("udataact").equals("deldata")){
+                request.setAttribute("udataact", "deldata");
+                request.setAttribute("udelID", request.getParameter("udelID"));
             }
         }
         
-        if((keyword == null || keyword.equals("")) && (status == null || status.equals(""))){
+        boolean hvKeyword = keyword != null && !keyword.equals("");
+        boolean hvStatus = status != null && !status.equals("");
+        boolean hvType = type != null && !type.equals("");
+        boolean hvOdCount0 = sOdCount0 != null && !sOdCount0.equals("");
+        boolean hvOdCount1 = sOdCount1 != null && !sOdCount1.equals("");
+        
+        if(hvOdCount0){
+            odCount0 = Integer.parseInt(sOdCount0);
+        }
+        if(hvOdCount1){
+            odCount1 = Integer.parseInt(sOdCount1);
+        }
+        
+        boolean validOdCount = (odCount1 >= odCount0) && odCount1 >= 0 && odCount0 >= 0;
+        
+        if(!hvKeyword && !hvStatus && !hvType && !validOdCount){
+            // empty search
             ubs = userDB.queryUser();
+        }else if(!validOdCount){
+            ubs = userDB.searchUser(keyword, status, type, -1, -1);
         }else{
-            if((keyword != null || !keyword.equals("")) && (status == null || status.equals(""))){
-                // case: only keyword
-                ubs = userDB.searchUser(keyword, null);
-            }else if((keyword == null || keyword.equals("")) && (status != null || !status.equals(""))){
-                // case: only status
-                ubs = userDB.searchUser(status, null);
-            }else{
-                // case: both keyword and status
-                ubs = userDB.searchUser(keyword, status);
-            }
+            ubs = userDB.searchUser(keyword, status, type, odCount0, odCount1);
         }
         request.setAttribute("userList", ubs);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/account_management.jsp");
@@ -146,37 +160,71 @@ public class AccountController extends HttpServlet {
     }
     
     public void doCreate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        int userID = userDB.getPossibleID();
-        userDB.insertUser(userID, request.getParameter("uname"), request.getParameter("edesc"));
-        if(request.getParameter("edisa") != null){
-            userDB.insertDisaUser(userID);
+        String userID = request.getParameter("uid");
+        String email = request.getParameter("uemail");
+        String pwd = request.getParameter("upwd");
+        String type = request.getParameter("utype");
+        String fname = request.getParameter("ufname");
+        String lname = request.getParameter("ulname");
+        String tel = request.getParameter("tel");
+        String status = "";
+        boolean isDisabled = request.getParameter("udisa") != null;
+        if(isDisabled){
+            status = "Disabled";
+        }else{
+            status = "Active";
         }
-        response.sendRedirect("/NewReservationSystem/Account");
+        
+        UserBean ub = new UserBean();
+        ub.setUserID(userID);
+        ub.setEmail(email);
+        ub.setPassword(pwd);
+        ub.setType(type);
+        ub.setFirstName(fname);
+        ub.setLastName(lname);
+        ub.setTel(tel);
+        ub.setStatus(status);
+        
+        if(userDB.addUserInfo(ub)){
+            response.sendRedirect("/NewReservationSystem/Account");
+        }
     }
     
     public void doEdit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        int equipID = Integer.parseInt(request.getParameter("editID"));
-        String equipName = request.getParameter("ename");
-        int quantity = Integer.parseInt(request.getParameter("eq"));
-        String description = request.getParameter("edesc");
-        boolean disabled = request.getParameter("edisa") != null;
-        UserBean ub = new UserBean();
-        ub.setEquipID(equipID);
-        ub.setEquipName(equipName);
-        ub.setQuantity(quantity);
-        ub.setDescription(description);
-        if(disabled){
-            ub.setStatus("Disabled");
+        String userID = request.getParameter("uid");
+        String email = request.getParameter("uemail");
+        String pwd = request.getParameter("upwd");
+        String type = request.getParameter("utype");
+        String fname = request.getParameter("ufname");
+        String lname = request.getParameter("ulname");
+        String tel = request.getParameter("utel");
+        String status = "";
+        boolean isDisabled = request.getParameter("udisa") != null;
+        if(isDisabled){
+            status = "Disabled";
+        }else{
+            status = "Active";
         }
-        if(userDB.updateEquip(eb)){
-            response.sendRedirect("/NewReservationSystem/Inventory");
+        
+        UserBean ub = new UserBean();
+        ub.setUserID(userID);
+        ub.setEmail(email);
+        ub.setPassword(pwd);
+        ub.setType(type);
+        ub.setFirstName(fname);
+        ub.setLastName(lname);
+        ub.setTel(tel);
+        ub.setStatus(status);
+        
+        if(userDB.updateUser(ub)){
+            response.sendRedirect("/NewReservationSystem/Account");
         }
     }
     
     public void doDel(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        int equipID = Integer.parseInt(request.getParameter("delID"));
-        if(userDB.delEquip(equipID)){
-            response.sendRedirect("/NewReservationSystem/Inventory");
+        String uid = request.getParameter("delID");
+        if(userDB.delUser(uid)){
+            response.sendRedirect("/NewReservationSystem/Account");
         }
     }
 }
