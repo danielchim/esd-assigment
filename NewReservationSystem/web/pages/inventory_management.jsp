@@ -12,7 +12,7 @@
         String dbPassword = "";
         String dbUrl = "jdbc:mysql://localhost:3306/itp4511_db";
         EquipDB equipDB = new EquipDB(dbUrl, dbUser, dbPassword);
-        EquipBean eb = new EquipBean();
+        EquipBean eb = null;
     %>
     <%
         if(request.getAttribute("equipList") != null){
@@ -147,6 +147,7 @@
                                                     + "<form method='get' action='/NewReservationSystem/Inventory'><input type='hidden' name='dataact' value='deldata'><input type='hidden' name='delID' value='"+ data.getEquipID() +"' />"
                                                     + "<button type='submit' class='btn btn-outline-danger rounded-pill modalbtn' id='del-"+ data.getEquipID() +"'>Delete</button></form>"
                                                     + "</div></td>");
+                                            out.println("</tr>");
                                         }
                                     }else{
                                         out.println("<tr><td colspan='7'>No data<td></tr>");

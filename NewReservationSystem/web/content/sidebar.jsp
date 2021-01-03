@@ -57,7 +57,7 @@
                 <h6 class="collapse-header">Management tools:</h6>
                 <a class="collapse-item" href="cards.html">Check in / out</a>
                 <a class="collapse-item" href="/NewReservationSystem/Inventory">Inventory Management</a>
-                <a class="collapse-item" href="/NewReservationSystem/pages/account_management.jsp">Account Management</a>
+                <a class="collapse-item" href="/NewReservationSystem/Account">Account Management</a>
                 <a class="collapse-item" href="utilities-border.html">Analytics</a>
             </div>
         </div>

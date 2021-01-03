@@ -280,7 +280,7 @@ public class EquipDB {
                 }else if(eb.getAvaQuantity() > 0){
                     eb.setStatus("Available");
                 }else{
-                    eb.setStatus("Occupied");
+                    eb.setStatus("Unavailable");
                 }
             }
             pStmnt.close();
