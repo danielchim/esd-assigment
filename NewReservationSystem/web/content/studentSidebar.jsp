@@ -30,7 +30,7 @@
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
+           aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-cog"></i>
             <span>Start</span>
         </a>
@@ -39,7 +39,7 @@
                 <h6 class="collapse-header">Borrowing:</h6>
                 <a class="collapse-item" href="${pageContext.request.contextPath}/reservation">Equipment reservation</a>
                 <a class="collapse-item" href="${pageContext.request.contextPath}/record">Records</a>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/overdue">Lookup overdues</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/cards.html">Lookup overdues</a>
             </div>
         </div>
     </li>
@@ -47,17 +47,17 @@
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-            aria-expanded="true" aria-controls="collapseUtilities">
+           aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-wrench"></i>
             <span>Management</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-            data-parent="#accordionSidebar">
+             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Management tools:</h6>
                 <a class="collapse-item" href="cards.html">Check in / out</a>
                 <a class="collapse-item" href="/NewReservationSystem/Inventory">Inventory Management</a>
-                <a class="collapse-item" href="/NewReservationSystem/Account">Account Management</a>
+                <a class="collapse-item" href="/NewReservationSystem/pages/account_management.jsp">Account Management</a>
                 <a class="collapse-item" href="utilities-border.html">Analytics</a>
             </div>
         </div>
@@ -66,7 +66,7 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    
+
 
     <!-- Nav Item - Charts -->
     <li class="nav-item">

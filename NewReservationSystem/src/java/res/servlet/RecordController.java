@@ -4,6 +4,7 @@ import res.bean.EquipBean;
 import res.bean.RecordBean;
 import res.bean.UserBean;
 import res.db.EquipDB;
+import res.db.RecordDB;
 import res.db.ReservationDB;
 
 import javax.servlet.RequestDispatcher;
@@ -16,16 +17,16 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "ReservationController", urlPatterns = {"/reservation"})
-public class ReservationController extends HttpServlet {
+@WebServlet(name = "RecordController", urlPatterns = {"/record"})
+public class RecordController extends HttpServlet {
     EquipDB equipDB;
-    ReservationDB reservationDB;
+    RecordDB recordDB;
     public void init(){
         String dbUser = this.getServletContext().getInitParameter("dbUser");
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
         equipDB = new EquipDB(dbUrl, dbUser, dbPassword);
-        reservationDB = new ReservationDB(dbUrl, dbUser, dbPassword);
+        recordDB = new RecordDB(dbUrl, dbUser, dbPassword);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
@@ -51,10 +52,10 @@ public class ReservationController extends HttpServlet {
     public void doFetchData(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ArrayList<EquipBean> ebs = equipDB.queryEquip();
         request.setAttribute("equipList", ebs);
-        UserBean targetUserBean = (UserBean) request.getSession().getAttribute("userInfo");
-        ArrayList<RecordBean> rb = reservationDB.fetchReservation(targetUserBean.getUserID());
-        request.setAttribute("reservationList", rb);
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/reservation.jsp");
+        UserBean targetUser = (UserBean)request.getSession().getAttribute("userInfo");
+        ArrayList<RecordBean> rb = recordDB.fetchRecord(targetUser.getUserID());
+        request.setAttribute("recordList", rb);
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/record.jsp");
         rd.forward(request, response);
     }
 
@@ -62,14 +63,16 @@ public class ReservationController extends HttpServlet {
         HttpSession session = request.getSession(true);
         // String userID = session.getAttribute("userInfo");
         String[] names = request.getParameterValues("equipment");
-        String[] quantity = request.getParameterValues("quantity");
-        int columnLength = reservationDB.fetchIdLength("recordID","record")+1;
+        int columnLength = recordDB.fetchIdLength("recordID","record")+1;
         for(int i = 0; i< names.length;i++){
             // converting names into ids
             int equipmentID = equipDB.fetchEquipmentID(names[i]);
-            reservationDB.insertReservation(columnLength ,equipmentID, quantity[i],1);
-            columnLength++;
+            recordDB.insertRecord(columnLength ,equipmentID, 1);
+            if(columnLength != 1){
+                columnLength++;
+            }
         }
         doFetchData(request, response);
     }
 }
+

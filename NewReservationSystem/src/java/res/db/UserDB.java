@@ -27,7 +27,7 @@ public class UserDB extends DBFactory{
         boolean isValid = false;
         try{
             conn = getConnection();
-            String preQueryStatement = "SELECT * FROM USERINFO WHERE email = ? and password = ? and email <> 'defaultUser'";
+            String preQueryStatement = "SELECT * FROM USERINFO WHERE email = ? and password = ?";
             pStmnt = conn.prepareStatement(preQueryStatement);
             pStmnt.setString(1, email);
             pStmnt.setString(2, pwd);
@@ -54,7 +54,7 @@ public class UserDB extends DBFactory{
         try{
             conn = getConnection();
             stmnt = conn.createStatement();
-            String sql 
+            String sql
                     = "CREATE TABLE IF NOT EXISTS userInfo ("
                     + "Id varchar(5) NOT NULL,"
                     + "username varchar(25) NOT NULL,"
@@ -82,7 +82,7 @@ public class UserDB extends DBFactory{
             conn = getConnection();
             String preQueryStatement = "INSERT INTO USERINFO VALUES (?,?,?,?,?,?,?,?,?)";
             pStmnt = conn.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, ub.getUserID());
+            pStmnt.setInt(1, ub.getUserID());
             pStmnt.setString(2, ub.getFirstName());
             pStmnt.setString(3, ub.getLastName());
             pStmnt.setString(4, ub.getPassword());
@@ -121,7 +121,7 @@ public class UserDB extends DBFactory{
             conn = getConnection();
             String preQueryStatement = "UPDATE userinfo SET userId = ?, firstName = ?, lastName = ?, password = ?, tel = ?, type = ?, disabled = ? WHERE email = ?";
             pStmnt = conn.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, ub.getUserID());
+            pStmnt.setInt(1, ub.getUserID());
             if(ufn != null){
                 pStmnt.setString(2, ub.getFirstName());
             }else{
@@ -186,7 +186,7 @@ public class UserDB extends DBFactory{
         }
         return isDeleted;
     }
-    
+
     public UserBean queryUserByEmail(String email){
         Connection conn = null;
         PreparedStatement pStmnt = null;
@@ -200,11 +200,11 @@ public class UserDB extends DBFactory{
             rs = pStmnt.executeQuery();
             if(rs.next()){
                 ub = new UserBean();
-                ub.setUserID(rs.getString(1));
+                ub.setUserID(rs.getInt(1));
                 ub.setFirstName(rs.getString(2));
                 ub.setLastName(rs.getString(3));
-                ub.setEmail(rs.getString(5));
-                ub.setTel(rs.getString(6));
+                ub.setEmail(rs.getString(6));
+                ub.setTel(rs.getString(5));
                 ub.setType(rs.getString(7));
                 ub.setRegisterDate(rs.getDate(8));
             }
@@ -234,7 +234,7 @@ public class UserDB extends DBFactory{
             rs = pStmnt.executeQuery();
             while(rs.next()){
                 ub = new UserBean();
-                ub.setUserID(rs.getString(1));
+                ub.setUserID(rs.getInt(1));
                 ub.setFirstName(rs.getString(2));
                 ub.setLastName(rs.getString(3));
                 ub.setPassword(rs.getString(4));
@@ -281,7 +281,7 @@ public class UserDB extends DBFactory{
         if(hvKeyword){
             if(id_only){
                 for(UserBean ub : origin){
-                    if(ub.getUserID().contains(keyword.substring(1))){
+                    if(ub.getUserID() == 1){
                         requireList.add(ub);
                     }
                 }

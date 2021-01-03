@@ -2,7 +2,7 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${pageContext.request.contextPath}/index.jsp">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${pageContext.request.contextPath}/main" methods="get">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
@@ -14,7 +14,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="${pageContext.request.contextPath}/index.jsp">
+        <a class="nav-link" href="${pageContext.request.contextPath}/main">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -38,8 +38,8 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Borrowing:</h6>
                 <a class="collapse-item" href="${pageContext.request.contextPath}/reservation">Equipment reservation</a>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/pages/record.jsp">Records</a>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/cards.html">Lookup overdues</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/record">Records</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/overdue">Lookup overdues</a>
             </div>
         </div>
     </li>
@@ -57,7 +57,7 @@
                 <h6 class="collapse-header">Management tools:</h6>
                 <a class="collapse-item" href="cards.html">Check in / out</a>
                 <a class="collapse-item" href="/NewReservationSystem/Inventory">Inventory Management</a>
-                <a class="collapse-item" href="/NewReservationSystem/pages/account_management.jsp">Account Management</a>
+                <a class="collapse-item" href="/NewReservationSystem/Account">Account Management</a>
                 <a class="collapse-item" href="utilities-border.html">Analytics</a>
             </div>
         </div>

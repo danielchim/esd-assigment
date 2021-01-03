@@ -8,24 +8,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ReservationDB extends DBFactory{
-    public ReservationDB(String dbUrl, String dbUser, String dbPassword) {
+public class RecordDB extends DBFactory{
+    public RecordDB(String dbUrl, String dbUser, String dbPassword) {
         super(dbUrl, dbUser, dbPassword);
     }
 
-    public boolean insertReservation(int reservationID, int reservationItemID,String quantity, int userID){
+    public boolean insertRecord(int reservationID, int reservationItemID, int userID){
         Connection conn = null;
         PreparedStatement pStmnt = null;
         boolean isSuccess = false;
         try{
-            int finalQuantity = Integer.parseInt(quantity);
             conn = getConnection();
-            String preQueryStatement = "INSERT INTO record VALUES (?,?,null,null,'reserved',?,?)"; // all items are reserved
+            String preQueryStatement = "INSERT INTO record VALUES (?,?,null,null,'reserved',?)"; // all items are reserved
             pStmnt = conn.prepareStatement(preQueryStatement);
             pStmnt.setInt(1, reservationID);
             pStmnt.setInt(2, reservationItemID);
             pStmnt.setInt(3, userID);
-            pStmnt.setInt(4, finalQuantity);
             int rowCount = pStmnt.executeUpdate();
             if(rowCount >= 1){
                 isSuccess = true;
@@ -42,7 +40,7 @@ public class ReservationDB extends DBFactory{
         }
         return isSuccess;
     }
-    public ArrayList<RecordBean> fetchReservation(int userID){
+    public ArrayList<RecordBean> fetchRecord(int userID){
         ArrayList<RecordBean> rbList = new ArrayList<>();
         RecordBean rb = null;
         Connection conn = null;
@@ -50,7 +48,7 @@ public class ReservationDB extends DBFactory{
         boolean isSuccess = false;
         try{
             conn = getConnection();
-            String preQueryStatement = "SELECT * FROM RECORD INNER JOIN equipinfo pu on RECORD.recordItemID = pu.equipID WHERE (userID = ?) AND (status = 'reserved' OR status = 'ready') ORDER BY recordID";
+            String preQueryStatement = "SELECT * FROM RECORD INNER JOIN equipinfo pu on RECORD.recordItemID = pu.equipID WHERE userID = ? ORDER BY recordID ";
             pStmnt = conn.prepareStatement(preQueryStatement);
             ResultSet rs = null;
             pStmnt.setInt(1, userID);
@@ -60,7 +58,6 @@ public class ReservationDB extends DBFactory{
                 rb.setRecordID(rs.getString(1));
                 rb.setItemName(rs.getString(9));
                 rb.setStartDate(rs.getDate(3));
-                rb.setQuantity(rs.getInt(7));
                 rb.setDueDate(rs.getDate(4));
                 rb.setStatus(rs.getString(5));
                 rbList.add(rb);

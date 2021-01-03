@@ -5,6 +5,20 @@
     <title>SB Admin 2 - Dashboard</title>
 
     <jsp:include page="/content/headconfigs.jsp" />
+    <%@page import="res.bean.EquipBean, java.util.ArrayList" %>
+    <%@ page import="res.bean.RecordBean" %>
+    <%!
+        ArrayList<EquipBean> equipList = null;
+        ArrayList<RecordBean> reservationList = null;
+    %>
+    <%
+        if(request.getAttribute("equipList") != null){
+            equipList = (ArrayList<EquipBean>)request.getAttribute("equipList");
+        }
+        if(request.getAttribute("recordList") != null){
+            reservationList = (ArrayList<RecordBean>)request.getAttribute("recordList");
+        }
+    %>
 </head>
 
 <body id="page-top">
@@ -88,12 +102,25 @@
                         <div class="row m-4">
                             <table class="table table-striped">
                                 <th>Record ID</th>
-                                <th>Equip ID</th>
-                                <th>Equip Name</th>
+                                <th>Equipment Name</th>
                                 <th>Status</th>
                                 <th>Start Date</th>
                                 <th>Due Date</th>
-                                <th>Actions</th>
+                                <%
+                                    if(reservationList.size() > 0){
+                                        for(RecordBean data : reservationList){
+                                            out.println("<tr>");
+                                            out.println("<td>" + data.getRecordID() + "</td>");
+                                            out.println("<td>" + data.getItemName() + "</td>");
+                                            out.println("<td>" + data.getStatus() +"</td>");
+                                            out.println("<td>" + data.getStartDate()+ "</td>");
+                                            out.println("<td>" + data.getDueDate()+"</td>");
+                                        }
+                                    }else{
+                                        out.println("<tr><td colspan='5'>No data<td></tr>");
+                                    }
+                                %>
+
                             </table>
                         </div>
                     </div>

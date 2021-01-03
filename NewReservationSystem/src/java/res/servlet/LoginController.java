@@ -88,7 +88,12 @@ public class LoginController extends HttpServlet {
         }else if("logout".equals(action)){
             doLogout(request, response);
         }else{
-            response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+            boolean isAuth =  isAuthenticated(request);
+            if(isAuth){
+                redirect("index.jsp",request,response);
+            }else{
+                redirect("login.jsp",request,response);
+            }
         }
     }
 
@@ -117,9 +122,7 @@ public class LoginController extends HttpServlet {
             // login failed
             targetURL = "/login.jsp?fail=failed";
         }
-        RequestDispatcher rd;
-        rd = getServletContext().getRequestDispatcher(targetURL);
-        rd.forward(request, response);
+        redirect(targetURL,request,response);
     }
     
     private boolean isAuthenticated(HttpServletRequest request){
@@ -133,10 +136,7 @@ public class LoginController extends HttpServlet {
     }
     
     private void doLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
-        String targetURL = "login.jsp";
-        RequestDispatcher rd;
-        rd = getServletContext().getRequestDispatcher("/" + targetURL);
-        rd.forward(request, response);
+        redirect("login.jsp",request,response);
     }
     
     private void doLogout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
@@ -156,8 +156,13 @@ public class LoginController extends HttpServlet {
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
         db = new UserDB(dbUrl, dbUser, dbPassword);
     }
-    
-    
+
+    private void redirect(String url, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+        String targetURL = url;
+        RequestDispatcher rd;
+        rd = getServletContext().getRequestDispatcher("/" + targetURL);
+        rd.forward(request, response);
+    }
     
     
     

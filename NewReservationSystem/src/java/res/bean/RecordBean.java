@@ -19,27 +19,63 @@ public class RecordBean implements Serializable {
     private String status;
     private Date startDate;
     private Date dueDate;
-    
+    private int quantity;
+
     public RecordBean(){}
-    
-    public String getRecordID(){ return recordID; }
-    public Date getStartDate(){ return startDate; }
-    public Date getDueDate(){ return dueDate; }
+
+    public String getRecordID() {
+        return recordID;
+    }
+
+    public void setRecordID(String recordID) {
+        this.recordID = recordID;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
     public String getItemName() {
         return itemName;
     }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
     public String getStatus() {
         return status;
     }
 
-    public void setRecordID(String recordID){ this.recordID = recordID; }
-    public void setUserID(String userID){ this.userID = userID; }
-    public void setStartDate(Date startDate){ this.startDate = startDate; }
-    public void setDueDate(Date dueDate){ this.dueDate = dueDate; }
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

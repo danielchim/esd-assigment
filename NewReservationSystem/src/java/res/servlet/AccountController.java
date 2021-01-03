@@ -130,22 +130,22 @@ public class AccountController extends HttpServlet {
                 request.setAttribute("udelID", request.getParameter("udelID"));
             }
         }
-        
+
         boolean hvKeyword = keyword != null && !keyword.equals("");
         boolean hvStatus = status != null && !status.equals("");
         boolean hvType = type != null && !type.equals("");
         boolean hvOdCount0 = sOdCount0 != null && !sOdCount0.equals("");
         boolean hvOdCount1 = sOdCount1 != null && !sOdCount1.equals("");
-        
+
         if(hvOdCount0){
             odCount0 = Integer.parseInt(sOdCount0);
         }
         if(hvOdCount1){
             odCount1 = Integer.parseInt(sOdCount1);
         }
-        
+
         boolean validOdCount = (odCount1 >= odCount0) && odCount1 >= 0 && odCount0 >= 0;
-        
+
         if(!hvKeyword && !hvStatus && !hvType && !validOdCount){
             // empty search
             ubs = userDB.queryUser();
@@ -158,9 +158,9 @@ public class AccountController extends HttpServlet {
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/account_management.jsp");
         rd.forward(request, response);
     }
-    
+
     public void doCreate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String userID = request.getParameter("uid");
+        int userID = Integer.parseInt(request.getParameter("uid"));
         String email = request.getParameter("uemail");
         String pwd = request.getParameter("upwd");
         String type = request.getParameter("utype");
@@ -174,7 +174,7 @@ public class AccountController extends HttpServlet {
         }else{
             status = "Active";
         }
-        
+
         UserBean ub = new UserBean();
         ub.setUserID(userID);
         ub.setEmail(email);
@@ -184,14 +184,14 @@ public class AccountController extends HttpServlet {
         ub.setLastName(lname);
         ub.setTel(tel);
         ub.setStatus(status);
-        
+
         if(userDB.addUserInfo(ub)){
             response.sendRedirect("/NewReservationSystem/Account");
         }
     }
-    
+
     public void doEdit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String userID = request.getParameter("uid");
+        int userID = Integer.parseInt(request.getParameter("uid"));
         String email = request.getParameter("uemail");
         String pwd = request.getParameter("upwd");
         String type = request.getParameter("utype");
@@ -205,7 +205,7 @@ public class AccountController extends HttpServlet {
         }else{
             status = "Active";
         }
-        
+
         UserBean ub = new UserBean();
         ub.setUserID(userID);
         ub.setEmail(email);
@@ -215,12 +215,12 @@ public class AccountController extends HttpServlet {
         ub.setLastName(lname);
         ub.setTel(tel);
         ub.setStatus(status);
-        
+
         if(userDB.updateUser(ub)){
             response.sendRedirect("/NewReservationSystem/Account");
         }
     }
-    
+
     public void doDel(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String uid = request.getParameter("delID");
         if(userDB.delUser(uid)){

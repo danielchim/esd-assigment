@@ -2,9 +2,45 @@
 <html lang="en">
 
 <head>
-    <title>SB Admin 2 - Dashboard</title>
-
     <jsp:include page="/content/headconfigs.jsp" />
+    <%@page import="res.bean.UserBean, java.util.ArrayList, res.db.UserDB" %>
+    <title>SB Admin 2 - Dashboard</title>
+    
+    
+    <%!
+        ArrayList<UserBean> userList = new ArrayList<UserBean>();
+        String dbUser = "root";
+        String dbPassword = "";
+        String dbUrl = "jdbc:mysql://localhost:3306/itp4511_db";
+        UserDB userDB = new UserDB(dbUrl, dbUser, dbPassword);
+        UserBean ub = new UserBean();
+    %>
+    <%
+        if(request.getAttribute("userList") != null){
+            userList = (ArrayList<UserBean>)request.getAttribute("userList");
+        }else{
+            response.sendRedirect(request.getContextPath() + "/Account" );
+        }
+        if(request.getAttribute("dataact") != null){
+            if(request.getAttribute("dataact").equals("editdata")){
+                ub = (UserBean)userDB.searchUser("#" + request.getAttribute("editID"), null).get(0);
+                out.println("<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>"
+                        + "<script type='text/javascript'>"
+                        + "$(document).ready(function(){"
+                        + "$('#editModal').modal('show');"
+                        + "});"
+                        + "</script>");
+            }else if(request.getAttribute("dataact").equals("deldata")){
+                ub = (UserBean)userDB.searchUser("#" + request.getAttribute("delID"), null).get(0);
+                out.println("<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>"
+                        + "<script type='text/javascript'>"
+                        + "$(document).ready(function(){"
+                        + "$('#delModal').modal('show');"
+                        + "});"
+                        + "</script>");
+            }
+        }
+    %>
 </head>
 
 <body id="page-top">
@@ -115,6 +151,30 @@
                                 <th>Register Date</th>
                                 <th>Overdue Count</th>
                                 <th>Actions</th>
+                                <%
+                                    if(userList.size() > 0){
+                                        for(UserBean data : userList){
+                                            out.println("<tr>");
+                                            out.println("<td id='data-" + data.getUserID() + "'>" + data.getUserID() + "</td>");
+                                            out.println("<td>" + data.getFirstName() + "</td>");
+                                            out.println("<td>" + data.getLastName() + "</td>");
+                                            out.println("<td>" + data.getTel() + "</td>");
+                                            out.println("<td>" + data.getEmail() +"</td>");
+                                            out.println("<td>" + data.getStatus() +"</td>");
+                                            out.println("<td>" + data.getType() +"</td>");
+                                            out.println("<td>" + data.getRegisterDate() +"</td>");
+                                            out.println("<td>" + data.getOverdueCount() +"</td>");
+                                            out.println("<td><div class='row'>"  
+                                                    + "<form method='get' action='/NewReservationSystem/Account'><input type='hidden' name='dataact' value='editdata' /><input type='hidden' name='editID' value='"+ data.getUserID() +"' />"
+                                                    + "<button type='submit' class='btn btn-outline-primary rounded-pill modalbtn'>Edit</button></form> "
+                                                    + "<form method='get' action='/NewReservationSystem/Account'><input type='hidden' name='dataact' value='deldata'><input type='hidden' name='delID' value='"+ data.getUserID() +"' />"
+                                                    + "<button type='submit' class='btn btn-outline-danger rounded-pill modalbtn'>Delete</button></form>"
+                                                    + "</div></td></tr>");
+                                        }
+                                    }else{
+                                        out.println("<tr><td colspan='7'>No data<td></tr>");
+                                    }
+                                %>
                             </table>
                         </div>
                     </div>

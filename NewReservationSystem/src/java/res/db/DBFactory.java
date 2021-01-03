@@ -1,5 +1,7 @@
 package res.db;
 
+import res.bean.RecordBean;
+
 import java.io.IOException;
 import java.sql.*;
 
@@ -22,17 +24,18 @@ public abstract class DBFactory {
         }
         return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
-    public boolean fetchIdLength(String column, String table){
+    public int fetchIdLength(String column, String table){
         Connection conn = null;
         PreparedStatement pStmnt = null;
-        boolean isSuccess = false;
+        int length = 0;
         try{
             conn = getConnection();
-            String preQueryStatement = "SELECT sum(char_length(?)) FROM ?";
+            String preQueryStatement = "SELECT MAX(" + column + ") FROM " + table;
             pStmnt = conn.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, column);
-            pStmnt.setString(2, table);
             ResultSet rs = pStmnt.executeQuery();
+            while(rs.next()){
+                length = rs.getInt(1);
+            }
             pStmnt.close();
             conn.close();
         }catch(SQLException ex){
@@ -43,6 +46,6 @@ public abstract class DBFactory {
         }catch(IOException ex){
             ex.printStackTrace();
         }
-        return isSuccess;
+        return length;
     }
 }

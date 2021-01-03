@@ -50,7 +50,7 @@ public class EquipDB extends DBFactory{
         }
         return isSuccess;
     }
-    
+
     public boolean insertDisaEquip(int equipID){
         Connection conn = null;
         PreparedStatement pStmnt = null;
@@ -76,7 +76,7 @@ public class EquipDB extends DBFactory{
         }
         return isSuccess;
     }
-    
+
     public boolean insertInventory(int equipID, int quantity){
         Connection conn = null;
         PreparedStatement pStmnt = null;
@@ -103,7 +103,7 @@ public class EquipDB extends DBFactory{
         }
         return isSuccess;
     }
-    
+
     public boolean updateEquip(EquipBean eb){
         Connection conn = null;
         PreparedStatement pStmnt = null;
@@ -213,7 +213,7 @@ public class EquipDB extends DBFactory{
         }catch(IOException ex){
             ex.printStackTrace();
         }
-        return isDeleted1 && isDeleted2 && isDeleted3;
+        return isDeleted1 & isDeleted2 & isDeleted3;
     }
     
     public ArrayList<EquipBean> queryEquip(){
@@ -222,6 +222,9 @@ public class EquipDB extends DBFactory{
         EquipBean eb = null;
         ArrayList<EquipBean> ebs = new ArrayList<EquipBean>();
         boolean isDisabled = false;
+        boolean isAvailable = true;
+        boolean isOccupied = false;
+        boolean isOverDue = false;
         try{
             conn = getConnection();
             String preQueryStatement = "SELECT * FROM equipinfo";
@@ -258,7 +261,7 @@ public class EquipDB extends DBFactory{
                         ex = ex.getNextException();
                     }
                 }
-                
+
                 if(isDisabled){
                     eb.setStatus("Disabled");
                     isDisabled = false;
@@ -357,5 +360,32 @@ public class EquipDB extends DBFactory{
         }
         return pID + 1;
     }
-    
+
+    public int fetchEquipmentID(String equipName){
+        Connection conn = null;
+        PreparedStatement pStmnt = null;
+        int equipID = 0;
+        try{
+            conn = getConnection();
+            String preQueryStatement = "SELECT equipID FROM equipinfo WHERE equipName = ?";
+            pStmnt = conn.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, equipName);
+            ResultSet rs = null;
+            rs = pStmnt.executeQuery();
+            while(rs.next()){
+                equipID = rs.getInt(1);
+            }
+            pStmnt.close();
+            conn.close();
+        }catch(SQLException ex){
+            while(ex != null){
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+        return equipID;
+    }
+
 }

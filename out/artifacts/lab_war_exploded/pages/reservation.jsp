@@ -38,7 +38,6 @@
         <div id="content">
 
             <jsp:include page="/content/topbar.jsp" />
-
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
@@ -99,30 +98,19 @@
                     </div>
 
                     <hr class="m-4">
+                    <div class="row ml-4">
+                        <button type="button" class="btn btn-outline-success rounded-pill" id="create" data-toggle="modal" data-target="#newReservationModal">
+                        <i class="fas fa-plus"></i>
+                        Create
+                        </button>
+                    </div>
                     <!-- Content Row -->
                     <div class="row m-4">
-                        <div>
-                            <div class="row justify-content-end">
-                                <div class="text-right" style="padding-right:50px ; padding-bottom: 20px;">
-                                    <a href class="dropdown-item" href="#" data-toggle="modal" data-target="#newReservationModal">
-                                        <button type="button" class="btn btn-primary" id="addRecord">
-                                            New record
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-                                                <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
-                                            </svg>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                         <table class="table table-striped">
-                            <th>Equip ID</th>
-                            <th>Equip Name</th>
+                            <th>Record ID</th>
+                            <th>Reserved Equipment Name</th>
                             <th>Availability</th>
-                            <th>Available Quantity</th>
-                            <th>Available Date</th>
-                            <th>Description</th>
+                            <th>Reserved Quantity</th>
                             <th>Actions</th>
                             <%
                                 if(reservationList.size() > 0){
@@ -130,14 +118,12 @@
                                         out.println("<tr>");
                                         out.println("<td>" + data.getRecordID() + "</td>");
                                         out.println("<td>" + data.getItemName() + "</td>");
-                                        out.println("<td>" + "</td>");
-                                        out.println("<td>" + "</td>");
-                                        out.println("<td>" + "</td>");
-                                        out.println("<td>" + "</td>");
-                                        out.println("<td>" + data.getStatus() +"</td>");
+                                        out.println("<td>" + data.getStatus() + "</td>");
+                                        out.println("<td>" + +data.getQuantity() +"</td>");
+                                        out.println("<td> <button type=\"button\" class=\"btn btn-primary\">Edit</button><button type=\"button\" class=\"btn btn-danger\" style=\"margin-left: 5%\">Delete</button>\n</td></tr>");
                                     }
                                 }else{
-                                    out.println("<tr><td colspan='8'>No data<td></tr>");
+                                    out.println("<tr><td colspan='5'>No data<td></tr>");
                                 }
                             %>
                         </table>
@@ -157,18 +143,43 @@
                         </div>
                         <div class="modal-body">
                             <form action="${pageContext.request.contextPath}/reservation" method="get">
+                                <div id="itemWrapper">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <label for="exampleFormControlSelect1">New Item</label>
+                                            </div>
+                                            <div class="col-sm">
+                                                <label for="spinner">Quantity</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <select class="form-control" id="exampleFormControlSelect1" name="equipment">
+                                                    <%
+                                                        if(equipList.size() > 0){
+                                                            for(EquipBean data : equipList){
+                                                                out.println("<option>" + data.getEquipName() + "</option>");
+                                                                out.println();
+                                                            }
+                                                        }else{
+                                                            out.println("<li>No data<td></li>");
+                                                        }
+                                                    %>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm">
+                                                <input id = "spinner" type="number" value="1" min="0" max="10" step="1" name="quantity"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
-                                    <select class="selectpicker" name="equipment" multiple>
-                                        <%
-                                            if(equipList.size() > 0){
-                                                for(EquipBean data : equipList){
-                                                    out.println("<option>" + data.getEquipName() + "</option>");
-                                                }
-                                            }else{
-                                                out.println("<li>No data<td></li>");
-                                            }
-                                        %>
-                                    </select>
+                                    <button type="button" class="btn btn-outline-success rounded-pill" id="insertReservationItem">
+                                        <i class="fas fa-plus"></i>
+                                        Moar items
+                                    </button>
                                 </div>
                                 <input type="hidden" name="action" value="insert" />
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -189,7 +200,17 @@
 <!-- End of Page Wrapper -->
 
 <jsp:include page="/content/addins.jsp" />
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap-input-spinner.js"></script>
+<script>
+    $(document).ready(function() {
+        let target = $("#itemWrapper").html();
+        $("#insertReservationItem").click(()=>{
+            $("#itemWrapper").append(target);
+        });
+
+
+    });
+</script>
 
 </body>
 
