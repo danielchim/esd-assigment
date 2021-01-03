@@ -50,7 +50,7 @@ public class EquipDB extends DBFactory{
         }
         return isSuccess;
     }
-
+    
     public boolean insertDisaEquip(int equipID){
         Connection conn = null;
         PreparedStatement pStmnt = null;
@@ -76,7 +76,7 @@ public class EquipDB extends DBFactory{
         }
         return isSuccess;
     }
-
+    
     public boolean insertInventory(int equipID, int quantity){
         Connection conn = null;
         PreparedStatement pStmnt = null;
@@ -103,11 +103,13 @@ public class EquipDB extends DBFactory{
         }
         return isSuccess;
     }
-
+    
     public boolean updateEquip(EquipBean eb){
         Connection conn = null;
         PreparedStatement pStmnt = null;
         boolean isUpdated = false;
+        boolean isUpdated2 = false;
+        boolean isUpdated3 = false;
         try{
             conn = getConnection();
             String preQueryStatement = "UPDATE equipinfo SET equipName = ?, description = ? WHERE equipID = ?";
@@ -115,7 +117,45 @@ public class EquipDB extends DBFactory{
             pStmnt.setString(1, eb.getEquipName());
             pStmnt.setString(2, eb.getDescription());
             pStmnt.setInt(3, eb.getEquipID());
-            isUpdated = pStmnt.execute();
+            isUpdated = pStmnt.executeUpdate() > 0;
+            preQueryStatement = "UPDATE inventory SET quantity = ? WHERE equipID = ?";
+            pStmnt = conn.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, eb.getQuantity());
+            pStmnt.setInt(2, eb.getEquipID());
+            isUpdated2 = pStmnt.executeUpdate() > 0;
+
+            preQueryStatement = "SELECT * FROM disaequip WHERE equipID = ?";
+            pStmnt = conn.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, eb.getEquipID());
+            ResultSet rs = pStmnt.executeQuery();
+            boolean isDisabled = rs.next();
+
+            if(eb.getStatus() != null){
+                // case eb disabled
+                if(isDisabled){
+                    // eb is already disabled
+                    isUpdated3 = true;
+                }else{
+                    // eb is not disabled yet
+                    preQueryStatement = "INSERT INTO disaequip VALUES (?)";
+                    pStmnt = conn.prepareStatement(preQueryStatement);
+                    pStmnt.setInt(1, eb.getEquipID());
+                    isUpdated3 = pStmnt.executeUpdate() > 0;
+                }
+
+            }else{
+                // case eb occupied or available
+                if(isDisabled){
+                    // eb is disabled currently
+                    preQueryStatement = "DELETE FROM disaequip WHERE equipID = ?";
+                    pStmnt = conn.prepareStatement(preQueryStatement);
+                    pStmnt.setInt(1, eb.getEquipID());
+                    isUpdated3 = pStmnt.executeUpdate() > 0;
+                }else{
+                    // eb is not disabled
+                    isUpdated3 = true;
+                }
+            }
             pStmnt.close();
             conn.close();
         }catch(SQLException ex){
@@ -126,19 +166,43 @@ public class EquipDB extends DBFactory{
         }catch(IOException ex){
             ex.printStackTrace();
         }
-        return isUpdated;
+        return isUpdated && isUpdated2 && isUpdated3;
     }
     
-    public boolean delEquip(String equipID){
+    public boolean delEquip(int equipID){
         Connection conn = null;
         PreparedStatement pStmnt = null;
-        boolean isDeleted = false;
+        boolean isDeleted1 = false;
+        boolean isDeleted2 = false;
+        boolean isDeleted3 = false;
         try{
+            // delete from inventory
             conn = getConnection();
-            String preQueryStatement = "DELETE FROM equipinfo WHERE equipID = ?";
+            String preQueryStatement = "DELETE FROM inventory WHERE equipID = ?";
             pStmnt = conn.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, equipID);
-            isDeleted = pStmnt.execute();
+            pStmnt.setInt(1, equipID);
+            isDeleted1 = pStmnt.executeUpdate() > 0;
+
+            // if the equipment is disabled
+            preQueryStatement = "SELECT * FROM disaequip WHERE equipID = ?";
+            pStmnt = conn.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, equipID);
+            ResultSet rs = pStmnt.executeQuery();
+            boolean isDisabled = rs.next();
+            if(isDisabled){
+                preQueryStatement = "DELETE FROM disaequip WHERE equipID = ?";
+                pStmnt = conn.prepareStatement(preQueryStatement);
+                pStmnt.setInt(1, equipID);
+                isDeleted2 = pStmnt.executeUpdate() > 0;
+            }else{
+                isDeleted2 = true;
+            }
+
+            // delete from equipinfo
+            preQueryStatement = "DELETE FROM equipinfo WHERE equipID = ?";
+            pStmnt = conn.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, equipID);
+            isDeleted3 = pStmnt.executeUpdate() > 0;
             pStmnt.close();
             conn.close();
         }catch(SQLException ex){
@@ -149,7 +213,7 @@ public class EquipDB extends DBFactory{
         }catch(IOException ex){
             ex.printStackTrace();
         }
-        return isDeleted;
+        return isDeleted1 && isDeleted2 && isDeleted3;
     }
     
     public ArrayList<EquipBean> queryEquip(){
@@ -158,9 +222,6 @@ public class EquipDB extends DBFactory{
         EquipBean eb = null;
         ArrayList<EquipBean> ebs = new ArrayList<EquipBean>();
         boolean isDisabled = false;
-        boolean isAvailable = true;
-        boolean isOccupied = false;
-        boolean isOverDue = false;
         try{
             conn = getConnection();
             String preQueryStatement = "SELECT * FROM equipinfo";
@@ -181,6 +242,7 @@ public class EquipDB extends DBFactory{
                     rs2 = pStmnt.executeQuery();
                     while(rs2.next()){
                         eb.setQuantity(rs2.getInt(1));
+                        eb.setAvaQuantity(rs2.getInt(1));
                     }
                     preQueryStatement = "SELECT * FROM disaequip WHERE equipID = ?";
                     pStmnt = conn.prepareStatement(preQueryStatement);
@@ -196,11 +258,14 @@ public class EquipDB extends DBFactory{
                         ex = ex.getNextException();
                     }
                 }
-
+                
                 if(isDisabled){
                     eb.setStatus("Disabled");
-                }else{
+                    isDisabled = false;
+                }else if(eb.getAvaQuantity() > 0){
                     eb.setStatus("Available");
+                }else{
+                    eb.setStatus("Occupied");
                 }
             }
             pStmnt.close();
@@ -213,9 +278,58 @@ public class EquipDB extends DBFactory{
         }catch(IOException ex){
             ex.printStackTrace();
         }
-
-
         return ebs;
+    }
+
+    public ArrayList<EquipBean> searchEquip(String keyword, String status){
+        boolean id_only = keyword.charAt(0) == '#';
+        boolean statusSearch = status != null;
+
+        ArrayList<EquipBean> origin = queryEquip();
+        ArrayList<EquipBean> requireList = new ArrayList<EquipBean>();
+
+        if(!statusSearch){
+            if(id_only){
+                for(EquipBean eb : origin){
+                    if(eb.getEquipID() == Integer.parseInt(keyword.substring(1))){
+                        requireList.add(eb);
+                    }
+                }
+            }else{
+                for(EquipBean eb : origin){
+                    boolean matchName = eb.getEquipName().contains(keyword);
+                    boolean matchDesc = eb.getDescription().contains(keyword);
+                    boolean matchStatus = eb.getStatus().equals(keyword);
+                    if(matchStatus){
+                        requireList.add(eb);
+                    }else{
+                        if(matchName || matchDesc){
+                            requireList.add(eb);
+                        }
+                    }
+                }
+            }
+        }else{
+            if(id_only){
+                for(EquipBean eb : origin){
+                    if(eb.getEquipID() == Integer.parseInt(keyword.substring(1)) && eb.getStatus().equals(status)){
+                        requireList.add(eb);
+                    }
+                }
+            }else{
+                for(EquipBean eb : origin){
+                    boolean matchName = eb.getEquipName().contains(keyword);
+                    boolean matchDesc = eb.getDescription().contains(keyword);
+                    boolean matchStatus = eb.getStatus().equals(keyword);
+                    if(matchName || matchDesc && matchStatus){
+                        requireList.add(eb);
+                    }
+                }
+            }
+        }
+
+
+        return requireList;
     }
 
     public int getPossibleID(){
@@ -243,5 +357,5 @@ public class EquipDB extends DBFactory{
         }
         return pID + 1;
     }
-
+    
 }

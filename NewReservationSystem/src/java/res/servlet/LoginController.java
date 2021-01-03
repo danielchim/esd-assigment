@@ -108,14 +108,14 @@ public class LoginController extends HttpServlet {
             if(session.getAttribute("originUrl") != null){
                 targetURL = session.getAttribute("originUrl").toString();
                 if(targetURL.equals("")){
-                    targetURL = "index.jsp";
+                    targetURL = "/index.jsp";
                 }
             }else{
-                targetURL = "index.jsp";
+                targetURL = "/index.jsp";
             }
         }else{
             // login failed
-            targetURL = "login.jsp?fail=failed";
+            targetURL = "/login.jsp?fail=failed";
         }
         RequestDispatcher rd;
         rd = getServletContext().getRequestDispatcher(targetURL);
