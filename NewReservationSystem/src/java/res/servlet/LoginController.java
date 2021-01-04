@@ -83,6 +83,9 @@ public class LoginController extends HttpServlet {
             doLogin(request, response);
             return;
         }
+        if(action == null){
+            action = "login";
+        }
         if("login".equals(action)){
             doAuthenticate(request, response);
         }else if("logout".equals(action)){
@@ -102,11 +105,12 @@ public class LoginController extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String targetURL;
+        // obtain session from request
+        HttpSession session = request.getSession(true);
         boolean isValid = db.isValidUser(email, password);
+        boolean isLogined = session.getAttribute("userInfo") != null;
         
         if(isValid){
-            // obtain session from request
-            HttpSession session = request.getSession(true);
             UserBean bean = db.queryUserByEmail(email);
             // store the userInfo to the session
             session.setAttribute("userInfo", bean);
@@ -118,6 +122,8 @@ public class LoginController extends HttpServlet {
             }else{
                 targetURL = "/index.jsp";
             }
+        }else if(isLogined){
+            targetURL = "/index.jsp";
         }else{
             // login failed
             targetURL = "/login.jsp?fail=failed";
