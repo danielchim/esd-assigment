@@ -11,14 +11,14 @@
     <%@ page import="res.bean.RecordBean" %>
     <%!
         ArrayList<EquipBean> equipList = null;
-        ArrayList<RecordBean> reservationList = null;
+        ArrayList<RecordBean> overdueList = null;
     %>
     <%
         if(request.getAttribute("equipList") != null){
             equipList = (ArrayList<EquipBean>)request.getAttribute("equipList");
         }
-        if(request.getAttribute("reservationList") != null){
-            reservationList = (ArrayList<RecordBean>)request.getAttribute("reservationList");
+        if(request.getAttribute("overdueList") != null){
+            overdueList = (ArrayList<RecordBean>)request.getAttribute("overdueList");
         }
     %>
 
@@ -42,14 +42,14 @@
             <div class="container-fluid" id="main-wrapper">
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Reservation</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Overdues</h1>
                 </div>
 
                 <div class="container-fluid card rounded border shadow mt-3 mb-3 p-0">
                     <!-- Content Row -->
                     <div class="row">
                         <div class="toppadding container">
-                            <p class="h3 text-center mt-3 mb-3">Search for your Equipment!</p>
+                            <p class="h3 text-center mt-3 mb-3">Search for your overdue items!</p>
                         </div>
 
                     </div>
@@ -97,32 +97,24 @@
                     </div>
 
                     <hr class="m-4">
-                    <div class="row ml-4">
-                        <button type="button" class="btn btn-outline-success rounded-pill" id="create" data-toggle="modal" data-target="#newReservationModal">
-                        <i class="fas fa-plus"></i>
-                        Create
-                        </button>
-                    </div>
                     <!-- Content Row -->
                     <div class="row m-4">
                         <table class="table table-striped" id="reservationTable">
                             <th>Record ID</th>
                             <th>Reserved Equipment Name</th>
-                            <th>Availability</th>
+                            <th>Status</th>
                             <th>Reserved Quantity</th>
-                            <th>Actions</th>
                             <%
-                                if(reservationList.size() > 0){
-                                    for(RecordBean data : reservationList){
+                                if(overdueList.size() > 0){
+                                    for(RecordBean data : overdueList){
                                         out.println("<tr>");
                                         out.println("<td>" + data.getRecordID() + "</td>");
                                         out.println("<td>" + data.getItemName() + "</td>");
                                         out.println("<td>" + data.getStatus() + "</td>");
-                                        out.println("<td>" + +data.getQuantity() +"</td>");
-                                        out.println("<td> <button type=\"button\" class=\"btn btn-primary\">Edit</button><button type=\"button\" class=\"btn btn-danger\" style=\"margin-left: 5%\">Delete</button>\n</td></tr>");
+                                        out.println("<td>" + +data.getQuantity() +"</td></tr>");
                                     }
                                 }else{
-                                    out.println("<tr><td colspan='5'>No data<td></tr>");
+                                    out.println("<tr><td colspan='3'>No data<td></tr>");
                                 }
                             %>
                         </table>
@@ -132,62 +124,6 @@
 
             </div>
             <!-- /.container-fluid -->
-            <!--New reservation modal-->
-            <div class="modal fade" id="newReservationModal" tabindex="-1" role="dialog" aria-labelledby="newReservationModal"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">New reservation</h5>
-                        </div>
-                        <div class="modal-body">
-                            <form action="${pageContext.request.contextPath}/reservation" method="get">
-                                <div id="itemWrapper">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm">
-                                                <label for="exampleFormControlSelect1">New Item</label>
-                                            </div>
-                                            <div class="col-sm">
-                                                <label for="spinner">Quantity</label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm">
-                                                <select class="form-control" id="exampleFormControlSelect1" name="equipment">
-                                                    <%
-                                                        if(equipList.size() > 0){
-                                                            for(EquipBean data : equipList){
-                                                                out.println("<option>" + data.getEquipName() + "</option>");
-                                                                out.println();
-                                                            }
-                                                        }else{
-                                                            out.println("<li>No data<td></li>");
-                                                        }
-                                                    %>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-sm">
-                                                <input id = "spinner" type="number" value="1" min="1" max="10" step="1" name="quantity"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-outline-success rounded-pill" id="insertReservationItem">
-                                        <i class="fas fa-plus"></i>
-                                        Moar items
-                                    </button>
-                                </div>
-                                <input type="hidden" name="action" value="insert" />
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- End of Main Content -->
 
         <jsp:include page="/content/footer.jsp" />

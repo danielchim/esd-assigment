@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: kahun
+  Date: 3/1/2021
+  Time: 21:00
+  To change this template use File | Settings | File Templates.
+--%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -99,8 +106,8 @@
                     <hr class="m-4">
                     <div class="row ml-4">
                         <button type="button" class="btn btn-outline-success rounded-pill" id="create" data-toggle="modal" data-target="#newReservationModal">
-                        <i class="fas fa-plus"></i>
-                        Create
+                            <i class="fas fa-plus"></i>
+                            Create
                         </button>
                     </div>
                     <!-- Content Row -->
@@ -114,12 +121,15 @@
                             <%
                                 if(reservationList.size() > 0){
                                     for(RecordBean data : reservationList){
+                                        String name = data.getItemName();
                                         out.println("<tr>");
-                                        out.println("<td>" + data.getRecordID() + "</td>");
-                                        out.println("<td>" + data.getItemName() + "</td>");
-                                        out.println("<td>" + data.getStatus() + "</td>");
-                                        out.println("<td>" + +data.getQuantity() +"</td>");
-                                        out.println("<td> <button type=\"button\" class=\"btn btn-primary\">Edit</button><button type=\"button\" class=\"btn btn-danger\" style=\"margin-left: 5%\">Delete</button>\n</td></tr>");
+                                        out.println("<td class=\"recordID\" >" + data.getRecordID() + "</td>");
+                                        out.println("<td class=\"itemName\">" + data.getItemName() + "</td>");
+                                        out.println("<td class=\"status\">" + data.getStatus() + "</td>");
+                                        out.println("<td class=\"quantity\">" + +data.getQuantity() +"</td>");
+                                        String debug = "<td> <button id='editReservationButton' type='button' class='btn btn-primary' data-toggle='modal' data-target='#editReservationModal' itemName = \""+ name + "\" status = " + data.getStatus() + ">Edit</button><button type='button' class='btn btn-danger' style='margin-left: 5%'>Delete</button></td></tr>";
+                                        System.out.println(debug);
+                                        out.println("<td> <button id='editReservationButton' type='button' class='btn btn-primary' data-toggle='modal' data-target='#editReservationModal' itemName = \""+ name + "\" status = " + data.getQuantity() + "userID = " + data.getUserID() + ">Edit</button><button type='button' class='btn btn-danger' style='margin-left: 5%'>Delete</button></td></tr>");
                                     }
                                 }else{
                                     out.println("<tr><td colspan='5'>No data<td></tr>");
@@ -132,55 +142,39 @@
 
             </div>
             <!-- /.container-fluid -->
-            <!--New reservation modal-->
-            <div class="modal fade" id="newReservationModal" tabindex="-1" role="dialog" aria-labelledby="newReservationModal"
+            <!--Edit reservation modal-->
+            <div class="modal fade" id="editReservationModal" tabindex="-1" role="dialog" aria-labelledby="editReservationModal"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">New reservation</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Edit reservation</h5>
                         </div>
                         <div class="modal-body">
-                            <form action="${pageContext.request.contextPath}/reservation" method="get">
+                            <form action="${pageContext.request.contextPath}/borrowManagement" method="get">
                                 <div id="itemWrapper">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm">
-                                                <label for="exampleFormControlSelect1">New Item</label>
+                                                <label for="reservationItems">Item name</label>
+                                                <p id="reservationItems"></p>
                                             </div>
                                             <div class="col-sm">
                                                 <label for="spinner">Quantity</label>
+                                                <p id="spinner"></p>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm">
-                                                <select class="form-control" id="exampleFormControlSelect1" name="equipment">
-                                                    <%
-                                                        if(equipList.size() > 0){
-                                                            for(EquipBean data : equipList){
-                                                                out.println("<option>" + data.getEquipName() + "</option>");
-                                                                out.println();
-                                                            }
-                                                        }else{
-                                                            out.println("<li>No data<td></li>");
-                                                        }
-                                                    %>
+                                                <select class="form-control" id="exampleFormControlSelect1" name="status">
+                                                    <option>Approved</option>
+                                                    <option>Rejected</option>
                                                 </select>
-                                            </div>
-
-                                            <div class="col-sm">
-                                                <input id = "spinner" type="number" value="1" min="1" max="10" step="1" name="quantity"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-outline-success rounded-pill" id="insertReservationItem">
-                                        <i class="fas fa-plus"></i>
-                                        Moar items
-                                    </button>
-                                </div>
-                                <input type="hidden" name="action" value="insert" />
+                                <input type="hidden" name="action" value="update" />
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
@@ -203,18 +197,29 @@
 <script>
     $(document).ready(function() {
         let target = $("#itemWrapper").html();
-        let alert = "<div class=\"alert alert-primary\" role=\"alert\">\n" + "  Your item " + $(this).find("td").eq(1).text()+ " is ready."+ "</div>"
+        let notify = "<div class=\"alert alert-primary\" role=\"alert\">\n" + "  Your item " + $(this).find("td").eq(1).text()+ " is ready."+ "</div>"
         $("#insertReservationItem").click(()=>{
             $("#itemWrapper").append(target);
         });
         $("#reservationTable").each(function() {
             if($(this).find("td").eq(2).text()==='ready'){
-                $("#main-wrapper").prepend(alert);
+                $("#main-wrapper").prepend(notify);
                 $(".alert").delay(2000).fadeOut('slow');
             }
         });
-
-
+        $("#editReservationModal").on('show.bs.modal', function (event) {
+            // get information to update quickly to modal view as loading begins
+            let opener= event.relatedTarget;//this holds the element who called the modal
+            // we get details from attributes
+            console.log(opener);
+            let firstname=$(opener).attr('itemName');
+            let status = $(opener).attr('status');
+            // set what we got to our form
+            $("#reservationItems").text(()=>{
+                return firstname;
+            });
+            $("#spinner").text(status);
+        });
     });
 </script>
 

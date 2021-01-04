@@ -39,8 +39,7 @@
 
             <jsp:include page="/content/topbar.jsp" />
             <!-- Begin Page Content -->
-            <div class="container-fluid">
-
+            <div class="container-fluid" id="main-wrapper">
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">Reservation</h1>
@@ -106,7 +105,7 @@
                     </div>
                     <!-- Content Row -->
                     <div class="row m-4">
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="reservationTable">
                             <th>Record ID</th>
                             <th>Reserved Equipment Name</th>
                             <th>Availability</th>
@@ -170,7 +169,7 @@
                                             </div>
 
                                             <div class="col-sm">
-                                                <input id = "spinner" type="number" value="1" min="0" max="10" step="1" name="quantity"/>
+                                                <input id = "spinner" type="number" value="1" min="1" max="10" step="1" name="quantity"/>
                                             </div>
                                         </div>
                                     </div>
@@ -204,8 +203,15 @@
 <script>
     $(document).ready(function() {
         let target = $("#itemWrapper").html();
+        let alert = "<div class=\"alert alert-primary\" role=\"alert\">\n" + "  Your item " + $(this).find("td").eq(1).text()+ " is ready."+ "</div>"
         $("#insertReservationItem").click(()=>{
             $("#itemWrapper").append(target);
+        });
+        $("#reservationTable").each(function() {
+            if($(this).find("td").eq(2).text()==='ready'){
+                $("#main-wrapper").prepend(alert);
+                $(".alert").delay(2000).fadeOut('slow');
+            }
         });
 
 

@@ -16,8 +16,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "ReservationController", urlPatterns = {"/reservation"})
-public class ReservationController extends HttpServlet {
+@WebServlet(name = "BorrowLookupManagementLookupController",urlPatterns = {"/management/borrowManagement"})
+public class BorrowLookupManagementLookupController extends HttpServlet {
     EquipDB equipDB;
     ReservationDB reservationDB;
     public void init(){
@@ -40,7 +40,8 @@ public class ReservationController extends HttpServlet {
             doFetchData(request, response);
         }else if("insert".equals(action)){
             doInsertReservation(request, response);
-            System.out.print("test!");
+        } else if("update".equals(action)){
+            doUpdateReservation(request, response);
         }else if("logout".equals(action)){
 
         }else{
@@ -51,10 +52,9 @@ public class ReservationController extends HttpServlet {
     public void doFetchData(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ArrayList<EquipBean> ebs = equipDB.queryEquip();
         request.setAttribute("equipList", ebs);
-        UserBean targetUserBean = (UserBean) request.getSession().getAttribute("userInfo");
-        ArrayList<RecordBean> rb = reservationDB.fetchReservation(targetUserBean.getUserID());
+        ArrayList<RecordBean> rb = reservationDB.fetchReservation(0);
         request.setAttribute("reservationList", rb);
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/reservation.jsp");
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/management/borrow_management.jsp");
         rd.forward(request, response);
     }
 
@@ -71,6 +71,17 @@ public class ReservationController extends HttpServlet {
             reservationDB.insertReservation(columnLength ,equipmentID, quantity[i],targetUserBean.getUserID());
             columnLength++;
         }
+        doFetchData(request, response);
+    }
+    public void doUpdateReservation(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession(true);
+        String name = request.getParameter("equipment");
+        String quantity = request.getParameter("quantity");
+        String status = request.getParameter("status");
+        int userID = Integer.parseInt(request.getParameter("userID"));
+        int columnLength = reservationDB.fetchIdLength("recordID","record");
+        int equipmentID = equipDB.fetchEquipmentID(name);
+        reservationDB.updateReservation(columnLength ,equipmentID, status,quantity,userID);
         doFetchData(request, response);
     }
 }

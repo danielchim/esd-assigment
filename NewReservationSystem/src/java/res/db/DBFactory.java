@@ -18,7 +18,7 @@ public abstract class DBFactory {
 
     public Connection getConnection() throws SQLException, IOException {
         try{
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         }catch(ClassNotFoundException e){
             e.printStackTrace();
         }

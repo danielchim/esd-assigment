@@ -55,7 +55,7 @@
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Management tools:</h6>
-                <a class="collapse-item" href="cards.html">Check in / out</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/management/borrowManagement">Check in / out</a>
                 <a class="collapse-item" href="/NewReservationSystem/Inventory">Inventory Management</a>
                 <a class="collapse-item" href="/NewReservationSystem/Account">Account Management</a>
                 <a class="collapse-item" href="utilities-border.html">Analytics</a>
