@@ -1,3 +1,10 @@
+<%@page import="res.bean.UserBean" %>
+<%
+    UserBean userinfo = (UserBean)session.getAttribute("userInfo");
+    String userType = userinfo.getType();
+%>
+
+
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -44,24 +51,33 @@
         </div>
     </li>
 
+    
     <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-            aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Management</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-            data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Management tools:</h6>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/management/borrowManagement">Check in / out</a>
-                <a class="collapse-item" href="/NewReservationSystem/Inventory">Inventory Management</a>
-                <a class="collapse-item" href="/NewReservationSystem/Account">Account Management</a>
-                <a class="collapse-item" href="/NewReservationSystem/Analytics">Analytics</a>
-            </div>
-        </div>
-    </li>
+    <%
+        if(!userType.equals("Student")){
+            out.print("<li class='nav-item'>" +
+            "<a class='nav-link collapsed' href='#' data-toggle='collapse' data-target='#collapseUtilities'" +
+            "aria-expanded='true' aria-controls='collapseUtilities'>" +
+            "<i class='fas fa-fw fa-wrench'></i>" +
+            "<span>Management</span>" +
+            "</a>" +
+            "<div id='collapseUtilities' class='collapse' aria-labelledby='headingUtilities'" +
+            "data-parent='#accordionSidebar'>" +
+            "<div class='bg-white py-2 collapse-inner rounded'>" +
+            "<h6 class='collapse-header'> Management tools:</h6>" +
+            "<a class='collapse-item' href='/NewReservationSystem/management/borrowManagement'>Check in / out</a>" +
+            "<a class='collapse-item' href='/NewReservationSystem/Inventory'>Inventory Management</a>");
+            if(userType.equals("Senior Technician")){
+                out.print("<a class='collapse-item' href='/NewReservationSystem/Account'>Account Management</a>" +
+                            "<a class='collapse-item' href='/NewReservationSystem/Analytics'>Analytics</a>");
+            }
+            
+            out.print("</div>" +
+            "</div>" +
+            "</li>");
+            
+        }
+    %>
 
     
 
