@@ -110,7 +110,7 @@
                                         <div class="col-md-5 p-4">
                                             <div class="form-group">
                                                 <label for="input-s-key">Equipment Key Word</label>
-                                                <input type="text" class="form-control" id="inputKey" name="s-keyword" />
+                                                <input type="text" class="form-control" id="inputKey" name="s-keyword" placeholder="type keyword begin with '#' to search id only..." />
                                             </div>
                                         </div>
                                         <div class="col-md-1 p-4">
@@ -176,7 +176,7 @@
                         <hr class="m-4"/>
                         
                         <div class="row ml-4">
-                            Period:
+                            Period: <%if(request.getParameter("s-period") != null && !request.getParameter("s-period").equals("")){out.print(request.getParameter("s-period"));}else{out.print("All");}%>
                         </div>
                         
                         <!-- Content Row -->
