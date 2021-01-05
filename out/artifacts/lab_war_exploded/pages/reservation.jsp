@@ -53,49 +53,49 @@
                         </div>
 
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row container-fluid">
-                                <div class="col-md-8 p-4">
-                                    <div class="form-group">
-                                        <label for="inputKey">Key Word</label>
-                                        <input type="text" class="form-control" id="inputKey" />
+                    <form action="${pageContext.request.contextPath}/reservation" method="get">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row container-fluid">
+                                    <div class="col-md-8 p-4">
+                                        <div class="form-group">
+                                            <label for="inputKey">Key Word</label>
+                                            <input type="text" class="form-control" id="inputKey" name="searchVal"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 p-4">
+                                        <div class="form-group">
+                                            <label for="inputAva">Availability</label>
+                                            <select id="inputAva" class="form-control" name="status">
+                                                <option selected value="">Choose...</option>
+                                                <option value="ready">Available</option>
+                                                <option value="reserved">Under Reserve</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 p-4">
-                                    <div class="form-group">
-                                        <label for="inputAva">Availability</label>
-                                        <select id="inputAva" class="form-control">
-                                            <option selected value="">Choose...</option>
-                                            <option>Available</option>
-                                            <option>Under Reserve</option>
-                                            <option>Occupied</option>
-                                        </select>
+                                <div class="row justify-content-end">
+                                    <div class="text-right" style="padding-right:50px ; padding-bottom: 20px;">
+                                        <button type="reset" class="btn btn-success" id="resetbtn" style="margin-right: 10px;">
+                                            Clear
+                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-counterclockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
+                                                <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
+                                            </svg>
+                                        </button>
+                                        <input hidden name="action" value="filter">
+                                        <button type="submit" class="btn btn-primary" id="filter">
+                                            Search
+                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                                                <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                                            </svg>
+                                        </button>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row justify-content-end">
-                                <div class="text-right" style="padding-right:50px ; padding-bottom: 20px;">
-                                    <button type="button" class="btn btn-success" id="resetbtn" style="margin-right: 10px;">
-                                        Clear
-                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-counterclockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
-                                            <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="btn btn-primary" id="search">
-                                        Search
-                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-                                            <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
-                                        </svg>
-                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
+                    </form>
                     <hr class="m-4">
                     <div class="row ml-4">
                         <button type="button" class="btn btn-outline-success rounded-pill" id="create" data-toggle="modal" data-target="#newReservationModal">
@@ -119,7 +119,7 @@
                                         out.println("<td>" + data.getItemName() + "</td>");
                                         out.println("<td>" + data.getStatus() + "</td>");
                                         out.println("<td>" + +data.getQuantity() +"</td>");
-                                        out.println("<td> <button type=\"button\" class=\"btn btn-primary\">Edit</button><button type=\"button\" class=\"btn btn-danger\" style=\"margin-left: 5%\">Delete</button>\n</td></tr>");
+                                        out.println("<td> <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#editReservationModal\" equipName=\""+ data.getItemName() + "\" quantity=" + data.getQuantity() + " userID=" + data.getUserID() + " recordID=" + data.getRecordID() + ">Edit</button><button type=\"button\" class=\"btn btn-danger\" style=\"margin-left: 5%\" data-toggle=\"modal\" data-target=\"#deleteReservationModal\" recordID=" + data.getRecordID() + ">Delete</button>\n</td></tr>");
                                     }
                                 }else{
                                     out.println("<tr><td colspan='5'>No data<td></tr>");
@@ -138,7 +138,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">New reservation</h5>
+                            <h5 class="modal-title" id="newReversatonModal">New reservation</h5>
                         </div>
                         <div class="modal-body">
                             <form action="${pageContext.request.contextPath}/reservation" method="get">
@@ -187,6 +187,79 @@
                     </div>
                 </div>
             </div>
+            <!--Edit reservation modal-->
+            <div class="modal fade" id="editReservationModal" tabindex="-1" role="dialog" aria-labelledby="editReservationModal"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit reservation</h5>
+                        </div>
+                        <div class="modal-body">
+                            <form action="${pageContext.request.contextPath}/reservation" method="get">
+                                <div id="itemWrapper">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <label for="exampleFormControlSelect1">New Item</label>
+                                            </div>
+                                            <div class="col-sm">
+                                                <label for="spinner">Quantity</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <select class="form-control" id="equipmentDropdown" name="equipmentName">
+                                                    <%
+                                                        if(equipList.size() > 0){
+                                                            for(EquipBean data : equipList){
+                                                                out.println("<option>" + data.getEquipName() + "</option>");
+                                                                out.println();
+                                                            }
+                                                        }else{
+                                                            out.println("<option>No data</option>");
+                                                        }
+                                                    %>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm">
+                                                <input id = "quantity" type="number" value="" min="1" max="10" step="1" name="quantity"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="action" value="update" />
+                                <input type="hidden" id ="userID" name="userID" value="" />
+                                <input type="hidden" id ="editTargetRecordID" name="recordID" value="" />
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Delete reservation modal-->
+            <div class="modal fade" id="deleteReservationModal" tabindex="-1" role="dialog" aria-labelledby="deleteReservationModal"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteReservationMoal">New reservation</h5>
+                        </div>
+                        <div class="modal-body">
+                            <form action="${pageContext.request.contextPath}/reservation" method="get">
+                                <div id="itemWrapper">
+                                    <p>Are you sure to delete this reservation?</p>
+                                </div>
+                                <input type="hidden" name="action" value="delete" />
+                                <input type="hidden" id="deleteTargetRecordID" name="recordID" value="" />
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="back" class="btn btn-danger">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- End of Main Content -->
 
@@ -213,7 +286,31 @@
                 $(".alert").delay(2000).fadeOut('slow');
             }
         });
-
+        $("#deleteReservationModal").on('show.bs.modal', function (event) {
+            // get information to update quickly to modal view as loading begins
+            let opener= event.relatedTarget;//this holds the element who called the modal
+            // we get details from attributes
+            // console.log(opener);
+            let recordID = $(opener).attr('recordID');
+            // set what we got to our form
+            $("#deleteTargetRecordID").attr('value', recordID);
+            console.log(recordID);
+            // $("#spinner").text(status);
+        });
+        $("#editReservationModal").on('show.bs.modal', function (event) {
+            // get information to update quickly to modal view as loading begins
+            let opener= event.relatedTarget;//this holds the element who called the modal
+            // we get details from attributes
+            let quantity = $(opener).attr('quantity');
+            let userID = $(opener).attr('userID');
+            let recordID = $(opener).attr('recordID');
+            // set what we got to our form
+            $("#quantity").attr('value', quantity);
+            $("#editTargetRecordID").attr('value', recordID);
+            $("#userID").attr('value', userID);
+            console.log(recordID);
+            // $("#spinner").text(status);
+        });
 
     });
 </script>

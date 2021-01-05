@@ -40,8 +40,13 @@ public class ReservationController extends HttpServlet {
             doFetchData(request, response);
         }else if("insert".equals(action)){
             doInsertReservation(request, response);
-            System.out.print("test!");
-        }else if("logout".equals(action)){
+        }else if("delete".equals(action)){
+            doDeleteReservation(request, response);
+        }else if("filter".equals(action)) {
+            doSearch(request, response);
+        }else if("update".equals(action)) {
+            doUpdateReservation(request, response);
+        }if("logout".equals(action)){
 
         }else{
             response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
@@ -59,8 +64,6 @@ public class ReservationController extends HttpServlet {
     }
 
     public void doInsertReservation(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        HttpSession session = request.getSession(true);
-        // String userID = session.getAttribute("userInfo");
         String[] names = request.getParameterValues("equipment");
         String[] quantity = request.getParameterValues("quantity");
         UserBean targetUserBean = (UserBean) request.getSession().getAttribute("userInfo");
@@ -71,6 +74,32 @@ public class ReservationController extends HttpServlet {
             reservationDB.insertReservation(columnLength ,equipmentID, quantity[i],targetUserBean.getUserID());
             columnLength++;
         }
+        doFetchData(request, response);
+    }
+    public void doDeleteReservation(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int recordID = Integer.parseInt(request.getParameter("recordID"));
+        reservationDB.deleteReservation(recordID);
+        doFetchData(request, response);
+    }
+    public void doSearch(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        ArrayList<EquipBean> ebs = equipDB.queryEquip();
+        request.setAttribute("equipList", ebs);
+        String status = request.getParameter("status");
+        String equipment = request.getParameter("searchVal");
+        UserBean targetUserBean = (UserBean) request.getSession().getAttribute("userInfo");
+        ArrayList<RecordBean> rb = reservationDB.searchReservation(targetUserBean.getUserID(),status,equipment);
+        request.setAttribute("reservationList", rb);
+        response.sendRedirect("${pageContext.request.contextPath}/reservation");
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/reservation.jsp");
+        rd.forward(request, response);
+    }
+    public void doUpdateReservation(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String name = request.getParameter("equipmentName");
+        String quantity = request.getParameter("quantity");
+        int userID = Integer.parseInt(request.getParameter("userID"));
+        int recordID = Integer.parseInt(request.getParameter("recordID"));
+        int equipmentID = equipDB.fetchEquipmentID(name);
+        reservationDB.updateReservation(recordID,equipmentID, "reserved" ,quantity,userID);
         doFetchData(request, response);
     }
 }

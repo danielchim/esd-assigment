@@ -41,6 +41,8 @@ public class OverdueLookupController extends HttpServlet {
         }else if("insert".equals(action)){
             // doInsertReservation(request, response);
             System.out.print("test!");
+        }else if("filter".equals(action)) {
+            doSearch(request, response);
         }else if("logout".equals(action)){
 
         }else{
@@ -52,6 +54,17 @@ public class OverdueLookupController extends HttpServlet {
         request.setAttribute("equipList", ebs);
         UserBean targetUserBean = (UserBean) request.getSession().getAttribute("userInfo");
         ArrayList<RecordBean> rb = overdueDB.fetchOverdueRecord(targetUserBean.getUserID());
+        request.setAttribute("overdueList", rb);
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/overdue.jsp");
+        rd.forward(request, response);
+    }
+
+    public void doSearch(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        ArrayList<EquipBean> ebs = equipDB.queryEquip();
+        request.setAttribute("equipList", ebs);
+        String equipment = request.getParameter("searchVal");
+        UserBean targetUserBean = (UserBean) request.getSession().getAttribute("userInfo");
+        ArrayList<RecordBean> rb = overdueDB.searchRecord(targetUserBean.getUserID(),equipment);
         request.setAttribute("overdueList", rb);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/overdue.jsp");
         rd.forward(request, response);
