@@ -178,7 +178,7 @@
                                 <div class="form-group">
                                     <button type="button" class="btn btn-outline-success rounded-pill" id="insertReservationItem">
                                         <i class="fas fa-plus"></i>
-                                        Moar items
+                                        More items
                                     </button>
                                 </div>
                                 <input type="hidden" name="action" value="insert" />

@@ -12,7 +12,7 @@
     <title>SB Admin 2 - Dashboard</title>
 
     <jsp:include page="/content/headconfigs.jsp" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap-datepicker.standalone.min.css">
 
     <%@page import="res.bean.EquipBean, java.util.ArrayList" %>
     <%@ page import="res.bean.RecordBean" %>
@@ -172,6 +172,16 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <label for="startDate">Start Date</label>
+                                                <input data-provide="datepicker" name="startDate">
+                                            </div>
+                                            <div class="col-sm">
+                                                <label for="dueDate">Due Date</label>
+                                                <input data-provide="datepicker" name="dueDate">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <input type="hidden" name="action" value="update" />
@@ -189,7 +199,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="deleteReservationMoal">New reservation</h5>
+                            <h5 class="modal-title" id="deleteReservationMoal">Delete reservation</h5>
                         </div>
                         <div class="modal-body">
                             <form action="${pageContext.request.contextPath}/management/borrowManagement" method="get">
@@ -217,11 +227,14 @@
 <!-- End of Page Wrapper -->
 
 <jsp:include page="/content/addins.jsp" />
-<script src="${pageContext.request.contextPath}/js/bootstrap-input-spinner.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap-datepicker.min.js"></script>
 <script>
     $(document).ready(function() {
         let target = $("#itemWrapper").html();
-        let notify = "<div class=\"alert alert-primary\" role=\"alert\">\n" + "  Your item " + $(this).find("td").eq(1).text()+ " is ready."+ "</div>"
+        let notify = "<div class=\"alert alert-primary\" role=\"alert\">\n" + "  Your item " + $(this).find("td").eq(1).text()+ " is ready."+ "</div>";
+        $('.datepicker').datepicker({
+            format: 'yyyy-MM-dd'
+        });
         $("#insertReservationItem").click(()=>{
             $("#itemWrapper").append(target);
         });

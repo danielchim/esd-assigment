@@ -1,5 +1,6 @@
 package res.servlet;
 
+import javafx.util.converter.LocalDateStringConverter;
 import res.bean.EquipBean;
 import res.bean.RecordBean;
 import res.bean.UserBean;
@@ -14,6 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @WebServlet(name = "BorrowLookupManagementLookupController",urlPatterns = {"/management/borrowManagement"})
@@ -41,7 +46,11 @@ public class BorrowLookupManagementLookupController extends HttpServlet {
         }else if("insert".equals(action)){
             doInsertReservation(request, response);
         }else if("update".equals(action)){
-            doUpdateReservation(request, response);
+            try {
+                doUpdateReservation(request, response);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }else if("delete".equals(action)){
             doDeleteReservation(request, response);
         }else if("logout".equals(action)){
@@ -75,14 +84,17 @@ public class BorrowLookupManagementLookupController extends HttpServlet {
         }
         doFetchData(request, response);
     }
-    public void doUpdateReservation(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void doUpdateReservation(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, ParseException {
         String name = request.getParameter("equipment");
         String quantity = request.getParameter("quantity");
         String status = request.getParameter("status");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm/dd/yyyy");
+        LocalDate startDate =  LocalDate.parse(request.getParameter("startDate"));
+        LocalDate dueDate =  LocalDate.parse(request.getParameter("dueDate"),formatter);
         int userID = Integer.parseInt(request.getParameter("userID"));
         int recordID = Integer.parseInt(request.getParameter("recordID"));
         int equipmentID = equipDB.fetchEquipmentID(name);
-        reservationDB.updateReservation(recordID,equipmentID, status,quantity,userID);
+        reservationDB.updateReservation(recordID,equipmentID,status,quantity,startDate,dueDate,userID);
         doFetchData(request, response);
     }
     public void doSearch(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
