@@ -242,7 +242,6 @@ public class EquipDB extends DBFactory{
                     rs2 = pStmnt.executeQuery();
                     while(rs2.next()){
                         eb.setQuantity(rs2.getInt(1));
-                        eb.setAvaQuantity(rs2.getInt(1));
                     }
                     preQueryStatement = "SELECT * FROM disaequip WHERE equipID = ?";
                     pStmnt = conn.prepareStatement(preQueryStatement);
@@ -252,6 +251,17 @@ public class EquipDB extends DBFactory{
                     while(rs3.next()){
                         isDisabled = true;
                     }
+                    preQueryStatement = "SELECT * FROM record WHERE recordItemID = ? AND status = ?";
+                    pStmnt = conn.prepareStatement(preQueryStatement);
+                    ResultSet rs4 = null;
+                    pStmnt.setInt(1, eb.getEquipID());
+                    pStmnt.setString(2, "ready");
+                    rs4 = pStmnt.executeQuery();
+                    int avaCount = eb.getQuantity();
+                    while(rs4.next()){
+                        avaCount-= rs4.getInt(7) ;
+                    }
+                    eb.setAvaQuantity(avaCount);
                 }catch(SQLException ex){
                     while(ex != null){
                         ex.printStackTrace();
