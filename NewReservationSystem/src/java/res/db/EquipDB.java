@@ -222,9 +222,6 @@ public class EquipDB extends DBFactory{
         EquipBean eb = null;
         ArrayList<EquipBean> ebs = new ArrayList<EquipBean>();
         boolean isDisabled = false;
-        boolean isAvailable = true;
-        boolean isOccupied = false;
-        boolean isOverDue = false;
         try{
             conn = getConnection();
             String preQueryStatement = "SELECT * FROM equipinfo";
@@ -285,8 +282,14 @@ public class EquipDB extends DBFactory{
     }
 
     public ArrayList<EquipBean> searchEquip(String keyword, String status){
-        boolean id_only = keyword.charAt(0) == '#';
-        boolean statusSearch = status != null;
+        
+        boolean id_only = false;
+        if(keyword != null){
+            id_only = keyword.charAt(0) == '#';
+        }
+        
+        
+        boolean statusSearch = status != null && keyword != null;
 
         ArrayList<EquipBean> origin = queryEquip();
         ArrayList<EquipBean> requireList = new ArrayList<EquipBean>();

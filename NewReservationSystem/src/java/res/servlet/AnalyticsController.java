@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import res.bean.EquipBean;
+import res.bean.RecordBean;
 import res.bean.UserBean;
 import res.db.EquipDB;
+import res.db.RecordDB;
 import res.db.UserDB;
 
 /**
@@ -28,6 +30,7 @@ public class AnalyticsController extends HttpServlet {
 
     private UserDB userDB;
     private EquipDB equipDB;
+    private RecordDB recordDB;
     
     public void init(){
         String dbUser = this.getServletContext().getInitParameter("dbUser");
@@ -35,6 +38,7 @@ public class AnalyticsController extends HttpServlet {
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
         userDB = new UserDB(dbUrl, dbUser, dbPassword);
         equipDB = new EquipDB(dbUrl, dbUser, dbPassword);
+        recordDB = new RecordDB(dbUrl, dbUser, dbPassword);
     }
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -115,41 +119,51 @@ public class AnalyticsController extends HttpServlet {
     public void doSearch(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ArrayList<EquipBean> ebs;
         ArrayList<UserBean> ubs;
+        ArrayList<RecordBean> rbs;
         String keyword = request.getParameter("s-keyword");
         String status = request.getParameter("s-status");
         String period = request.getParameter("s-period");
         String studentID = request.getParameter("s-sid");
         boolean overdue = request.getParameter("s-od") != null;
+        boolean hvKeyword = keyword != null && !keyword.equals("");
+        boolean hvStatus = status != null && !status.equals("");
+        boolean hvPeriod = period != null && !period.equals("");
+        boolean hvSid = studentID != null && !studentID.equals("");
+        if(!hvKeyword) keyword = null;
+        if(!hvStatus) status = null;
+        if(!hvPeriod) period = null;
+        if(!hvSid) studentID = null;
         
-//        if(request.getParameter("dataact") != null){
-//            if(request.getParameter("dataact").equals("editdata")){
-//                request.setAttribute("dataact", "editdata");
-//                request.setAttribute("editID", request.getParameter("editID"));
-//            }else if(request.getParameter("dataact").equals("deldata")){
-//                request.setAttribute("dataact", "deldata");
-//                request.setAttribute("delID", request.getParameter("delID"));
-//            }
-//        }
-        
-//        if((keyword == null || keyword.equals("")) && (status == null || status.equals(""))){
-//            ebs = equipDB.queryEquip();
-//        }else{
-//            if((keyword != null || !keyword.equals("")) && (status == null || status.equals(""))){
-//                // case: only keyword
-//                ebs = equipDB.searchEquip(keyword, null);
-//            }else if((keyword == null || keyword.equals("")) && (status != null || !status.equals(""))){
-//                // case: only status
-//                ebs = equipDB.searchEquip(status, null);
-//            }else{
-//                // case: both keyword and status
-//                ebs = equipDB.searchEquip(keyword, status);
-//            }
-//        }
+        if(!overdue && !hvKeyword && !hvStatus && !hvPeriod && !hvSid){
+            ebs = equipDB.queryEquip();
+            rbs = null;
+            request.setAttribute("searchact", "equip");
+        }else if(overdue){
+            ebs = equipDB.queryEquip();
+            rbs = recordDB.searchEquipRecord(keyword, status, period, studentID, true);
+        }else if(!overdue && !hvSid){
+            
+            
+            if(hvKeyword && !hvStatus){
+                ebs = equipDB.searchEquip(keyword, status);
+            }else if(!hvKeyword && hvStatus){
+                ebs = equipDB.searchEquip(status, null);
+            }else if(hvKeyword && hvStatus){
+                ebs = equipDB.searchEquip(keyword, status);
+            }else{
+                ebs = equipDB.queryEquip();
+            }
+            rbs = null;
+            request.setAttribute("searchact", "equip");
+        }else{
+            ebs = equipDB.queryEquip();
+            rbs = recordDB.searchEquipRecord(keyword, status, period, studentID, false);
+        }
 
         ubs = userDB.queryUser();
-        ebs = equipDB.queryEquip();
         request.setAttribute("aequipList", ebs);
         request.setAttribute("userList", ubs);
+        request.setAttribute("arecordList", rbs);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/analytics.jsp");
         rd.forward(request, response);
     }

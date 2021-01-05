@@ -18,8 +18,10 @@
         UserDB userDB = new UserDB(dbUrl, dbUser, dbPassword);
         RecordDB recordDB = new RecordDB(dbUrl, dbUser, dbPassword);
         String selectID = "";
+        boolean equipSearch = true;
     %>
     <%
+        equipSearch = request.getAttribute("searchact") != null;
         if(request.getAttribute("aequipList") != null && request.getAttribute("userList") != null){
             aequipList = (ArrayList<EquipBean>)request.getAttribute("aequipList");
             userList = (ArrayList<UserBean>)request.getAttribute("userList");
@@ -69,6 +71,9 @@
                 arecordList = recordDB.fetchRecord(Integer.parseInt(selectID));
             }
         }
+        if(request.getAttribute("arecordList") != null){
+            arecordList = (ArrayList<RecordBean>)request.getAttribute("arecordList");
+        }
     %>
 </head>
 
@@ -97,7 +102,7 @@
 
                     <div class="container-fluid card rounded border shadow mt-3 mb-3 p-0">
                         <!-- Content Row -->
-                        <form method="get" action="/NewReservationSystem/Account">
+                        <form method="get" action="/NewReservationSystem/Analytics">
                             <input type="hidden" name="action" value="search" />
                             <div class="row">
                                 <div class="col-md-12">
@@ -120,7 +125,8 @@
                                                 <select id="inputAva" class="form-control" name="s-status">
                                                     <option selected value="">Choose...</option>
                                                     <option>Available</option>
-                                                    <option>Occupied</option>
+                                                    <option>Unavailable</option>
+                                                    <option>Disabled</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -137,7 +143,7 @@
                                         <div class="col-md-2 p-4">
                                             <div class="form-group">
                                                 <label for="input-s-stu">Student</label>
-                                                <input type="hidden" name="s-sid" value="" />
+                                                <input type="hidden" name="s-sid" value="<%=selectID%>" />
                                                 <button type="button" class="btn btn-primary rounded-pill form-control" id="search" data-toggle="modal" data-target="#searchModal" id="input-s-stu">
                                                     <% if(!selectID.equals("")){ out.print("#"+selectID); }else{ out.print("Not Selected"); } %>
                                                 </button>
@@ -177,7 +183,7 @@
                         <div class="row m-4">
                             <table class="table table-striped">
                                 <%
-                                    if(selectID.equals("")){
+                                    if(selectID.equals("") && equipSearch){
                                         out.println("<th>Equip ID</th>" +
                                         "<th>Equip Name</th>" +
                                         "<th>Quantity (Stock / Total)</th>" +
@@ -212,7 +218,7 @@
                                             for(RecordBean data : arecordList){
                                                 out.println("<tr>");
                                                 out.println("<td>" + data.getRecordID() + "</td>");
-                                                out.println("<td>" + selectID + "</td>");
+                                                out.println("<td>" + data.getUserID() + "</td>");
                                                 out.println("<td>" + data.getItemName() + "</td>");
                                                 out.println("<td>" + data.getStatus() +"</td>");
                                                 out.println("<td>" + data.getQuantity() +"</td>");

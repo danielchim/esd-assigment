@@ -20,6 +20,7 @@ public class RecordBean implements Serializable {
     private Date startDate;
     private Date dueDate;
     private int quantity;
+    private EquipBean eb;
 
     public RecordBean(){}
 
@@ -77,5 +78,13 @@ public class RecordBean implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+    
+    public EquipBean getEquipBean(){
+        return eb;
+    }
+    
+    public void setEquipBean(EquipBean eb){
+        this.eb = eb;
     }
 }
