@@ -203,8 +203,8 @@ public class UserDB extends DBFactory{
                 ub.setUserID(rs.getInt(1));
                 ub.setFirstName(rs.getString(2));
                 ub.setLastName(rs.getString(3));
-                ub.setEmail(rs.getString(6));
-                ub.setTel(rs.getString(5));
+                ub.setEmail(rs.getString(5));
+                ub.setTel(rs.getString(6));
                 ub.setType(rs.getString(7));
                 ub.setRegisterDate(rs.getDate(8));
             }
@@ -355,8 +355,8 @@ public class UserDB extends DBFactory{
                 ub.setFirstName(rs.getString(2));
                 ub.setLastName(rs.getString(3));
                 ub.setPassword(rs.getString(4));
-                ub.setEmail(rs.getString(6));
-                ub.setTel(rs.getString(5));
+                ub.setEmail(rs.getString(5));
+                ub.setTel(rs.getString(6));
                 ub.setType(rs.getString(7));
                 ub.setRegisterDate(rs.getDate(8));
 

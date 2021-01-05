@@ -16,7 +16,7 @@
     </context-param>
     <context-param>
         <param-name>dbPassword</param-name>
-        <param-value>Nerish12945</param-value>
+        <param-value></param-value>
     </context-param>
     <error-page>
         <error-code>404</error-code>
