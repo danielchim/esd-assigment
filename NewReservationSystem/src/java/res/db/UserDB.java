@@ -281,7 +281,7 @@ public class UserDB extends DBFactory{
         if(hvKeyword){
             if(id_only){
                 for(UserBean ub : origin){
-                    if(ub.getUserID() == 1){
+                    if(ub.getUserID() == Integer.parseInt(keyword.substring(1))){
                         requireList.add(ub);
                     }
                 }

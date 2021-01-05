@@ -8,7 +8,7 @@
     </session-config>
     <context-param>
         <param-name>dbUrl</param-name>
-        <param-value>jdbc:mysql://localhost:3306/itp4511_db</param-value>
+        <param-value>jdbc:mysql://localhost:3306/ITP4511_DB</param-value>
     </context-param>
     <context-param>
         <param-name>dbUser</param-name>
@@ -16,7 +16,7 @@
     </context-param>
     <context-param>
         <param-name>dbPassword</param-name>
-        <param-value>Nerish12945</param-value>
+        <param-value></param-value>
     </context-param>
     <error-page>
         <error-code>404</error-code>
