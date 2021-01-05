@@ -129,10 +129,10 @@
                                         out.println("<td class=\"quantity\">" + +data.getQuantity() +"</td>");
                                         String debug = "<td> <button id='editReservationButton' type='button' class='btn btn-primary' data-toggle='modal' data-target='#editReservationModal' itemName = \""+ name + "\" status = " + data.getStatus() + ">Edit</button><button type='button' class='btn btn-danger' style='margin-left: 5%'>Delete</button></td></tr>";
                                         System.out.println(debug);
-                                        out.println("<td> <button id='editReservationButton' type='button' class='btn btn-primary' data-toggle='modal' data-target='#editReservationModal' itemName = \""+ name + "\" status = " + data.getQuantity() + "userID = " + data.getUserID() + ">Edit</button><button type='button' class='btn btn-danger' style='margin-left: 5%'>Delete</button></td></tr>");
+                                        out.println("<td> <button id='editReservationButton' type='button' class='btn btn-primary' data-toggle='modal' data-target='#editReservationModal' itemName = \""+ name + "\" quantity = \"" + data.getQuantity() + "\"userID = " + data.getUserID() + " recordID = " + data.getRecordID() + ">Edit</button><button type=\"button\" class=\"btn btn-danger\" style=\"margin-left: 5%\" data-toggle=\"modal\" data-target=\"#deleteReservationModal\" recordID=" + data.getRecordID() + ">Delete</button></tr>");
                                     }
                                 }else{
-                                    out.println("<tr><td colspan='5'>No data<td></tr>");
+                                    out.println("<tr><td colspan='4'>No data<td></tr>");
                                 }
                             %>
                         </table>
@@ -151,31 +151,55 @@
                             <h5 class="modal-title" id="exampleModalLabel">Edit reservation</h5>
                         </div>
                         <div class="modal-body">
-                            <form action="${pageContext.request.contextPath}/borrowManagement" method="get">
+                            <form action="${pageContext.request.contextPath}/management/borrowManagement" method="get">
                                 <div id="itemWrapper">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm">
-                                                <label for="reservationItems">Item name</label>
-                                                <p id="reservationItems"></p>
+                                                <label for="equipment">Item name</label>
+                                                <input id ="equipment" name="equipment" value="0" type="text" readonly="readonly">
                                             </div>
                                             <div class="col-sm">
-                                                <label for="spinner">Quantity</label>
-                                                <p id="spinner"></p>
+                                                <label for="quantity">Quantity</label>
+                                                <input id ="quantity" name="quantity" value="0" type="text" readonly="readonly">
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row" style="margin-top: 5%">
                                             <div class="col-sm">
                                                 <select class="form-control" id="exampleFormControlSelect1" name="status">
-                                                    <option>Approved</option>
-                                                    <option>Rejected</option>
+                                                    <option value="ready">Approved</option>
+                                                    <option value="rejected">Rejected</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <input type="hidden" name="action" value="update" />
+                                <input type="hidden" id ="userID" name="userID" value="" />
+                                <input type="hidden" id ="recordID" name="recordID" value="" />
                                 <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Delete reservation modal-->
+            <div class="modal fade" id="deleteReservationModal" tabindex="-1" role="dialog" aria-labelledby="deleteReservationModal"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteReservationMoal">New reservation</h5>
+                        </div>
+                        <div class="modal-body">
+                            <form action="${pageContext.request.contextPath}/management/borrowManagement" method="get">
+                                <div id="itemWrapper">
+                                    <p>Are you sure to delete this reservation?</p>
+                                </div>
+                                <input type="hidden" name="action" value="delete" />
+                                <input type="hidden" id="deleteTargetRecordID" name="recordID" value="" />
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="back" class="btn btn-danger">Cancel</button>
                             </form>
                         </div>
                     </div>
@@ -207,18 +231,33 @@
                 $(".alert").delay(2000).fadeOut('slow');
             }
         });
+        $("#deleteReservationModal").on('show.bs.modal', function (event) {
+            // get information to update quickly to modal view as loading begins
+            let opener= event.relatedTarget;//this holds the element who called the modal
+            // we get details from attributes
+            // console.log(opener);
+            let recordID = $(opener).attr('recordID');
+            // set what we got to our form
+            $("#deleteTargetRecordID").attr('value', recordID);
+            console.log(recordID);
+            // $("#spinner").text(status);
+        });
         $("#editReservationModal").on('show.bs.modal', function (event) {
             // get information to update quickly to modal view as loading begins
             let opener= event.relatedTarget;//this holds the element who called the modal
             // we get details from attributes
-            console.log(opener);
-            let firstname=$(opener).attr('itemName');
-            let status = $(opener).attr('status');
+            // console.log(opener);
+            let itemName=$(opener).attr('itemName');
+            let userID = $(opener).attr('userID');
+            let quantity = $(opener).attr('quantity');
+            let recordID = $(opener).attr('recordID');
             // set what we got to our form
-            $("#reservationItems").text(()=>{
-                return firstname;
-            });
-            $("#spinner").text(status);
+            $("#equipment").attr('value', itemName);
+            $("#quantity").attr('value', quantity);
+            $("#userID").attr('value', userID);
+            $("#recordID").attr('value', recordID);
+            console.log(recordID);
+            // $("#spinner").text(status);
         });
     });
 </script>

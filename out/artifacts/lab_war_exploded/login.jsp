@@ -27,7 +27,7 @@
         }
         
         if(session.getAttribute("userInfo") != null){
-            response.sendRedirect("/NewReservationSystem/index.jsp");
+            response.sendRedirect("/NewReservationSystem/main");
         }
     %>
 

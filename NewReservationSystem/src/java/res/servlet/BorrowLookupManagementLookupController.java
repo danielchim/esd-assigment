@@ -40,8 +40,10 @@ public class BorrowLookupManagementLookupController extends HttpServlet {
             doFetchData(request, response);
         }else if("insert".equals(action)){
             doInsertReservation(request, response);
-        } else if("update".equals(action)){
+        }else if("update".equals(action)){
             doUpdateReservation(request, response);
+        }else if("delete".equals(action)){
+            doDeleteReservation(request, response);
         }else if("logout".equals(action)){
 
         }else{
@@ -74,14 +76,25 @@ public class BorrowLookupManagementLookupController extends HttpServlet {
         doFetchData(request, response);
     }
     public void doUpdateReservation(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        HttpSession session = request.getSession(true);
         String name = request.getParameter("equipment");
         String quantity = request.getParameter("quantity");
         String status = request.getParameter("status");
         int userID = Integer.parseInt(request.getParameter("userID"));
-        int columnLength = reservationDB.fetchIdLength("recordID","record");
+        int recordID = Integer.parseInt(request.getParameter("recordID"));
         int equipmentID = equipDB.fetchEquipmentID(name);
-        reservationDB.updateReservation(columnLength ,equipmentID, status,quantity,userID);
+        reservationDB.updateReservation(recordID,equipmentID, status,quantity,userID);
+        doFetchData(request, response);
+    }
+    public void doSearch(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String name = request.getParameter("equipment");
+        String status = request.getParameter("status");
+        int userID = Integer.parseInt(request.getParameter("userID"));
+        reservationDB.searchReservation(userID, status, name);
+        doFetchData(request, response);
+    }
+    public void doDeleteReservation(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int recordID = Integer.parseInt(request.getParameter("recordID"));
+        reservationDB.deleteReservation(recordID);
         doFetchData(request, response);
     }
 }

@@ -42,6 +42,8 @@ public class RecordController extends HttpServlet {
         }else if("insert".equals(action)){
             doInsertReservation(request, response);
             System.out.print("test!");
+        }else if("filter".equals(action)) {
+            doSearch(request, response);
         }else if("logout".equals(action)){
 
         }else{
@@ -73,6 +75,17 @@ public class RecordController extends HttpServlet {
             }
         }
         doFetchData(request, response);
+    }
+    public void doSearch(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        ArrayList<EquipBean> ebs = equipDB.queryEquip();
+        request.setAttribute("equipList", ebs);
+        String status = request.getParameter("status");
+        String equipment = request.getParameter("searchVal");
+        UserBean targetUserBean = (UserBean) request.getSession().getAttribute("userInfo");
+        ArrayList<RecordBean> rb = recordDB.searchRecord(targetUserBean.getUserID(),status,equipment);
+        request.setAttribute("recordList", rb);
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/record.jsp");
+        rd.forward(request, response);
     }
 }
 

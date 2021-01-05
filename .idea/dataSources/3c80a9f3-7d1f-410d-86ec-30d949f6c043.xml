@@ -1175,86 +1175,90 @@
       <NotNull>1</NotNull>
       <Collation>utf8mb4_general_ci</Collation>
     </column>
-    <index id="366" parent="343" name="recordItemID">
+    <column id="366" parent="343" name="quantity">
+      <Position>7</Position>
+      <DataType>int(2)|0s</DataType>
+    </column>
+    <index id="367" parent="343" name="recordItemID">
       <ColNames>recordItemID</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="367" parent="343" name="userID">
+    <index id="368" parent="343" name="userID">
       <ColNames>userID</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="368" parent="343" name="PRIMARY">
+    <key id="369" parent="343" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>recordID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="369" parent="343" name="record_ibfk_2">
+    <foreign-key id="370" parent="343" name="record_ibfk_2">
       <ColNames>recordItemID</ColNames>
       <RefTableName>equipinfo</RefTableName>
       <RefColNames>equipID</RefColNames>
     </foreign-key>
-    <foreign-key id="370" parent="343" name="record_ibfk_1">
+    <foreign-key id="371" parent="343" name="record_ibfk_1">
       <ColNames>userID</ColNames>
       <RefTableName>userinfo</RefTableName>
       <RefColNames>userID</RefColNames>
     </foreign-key>
-    <column id="371" parent="344" name="reversationID">
+    <column id="372" parent="344" name="reversationID">
       <Position>1</Position>
       <DataType>int(10)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="372" parent="344" name="reservationItemName">
+    <column id="373" parent="344" name="reservationItemName">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="373" parent="344" name="isReadyToPickUp">
+    <column id="374" parent="344" name="isReadyToPickUp">
       <Position>3</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="374" parent="344" name="PRIMARY">
+    <key id="375" parent="344" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>reversationID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="375" parent="345" name="userID">
+    <column id="376" parent="345" name="userID">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="376" parent="345" name="firstName">
+    <column id="377" parent="345" name="firstName">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="377" parent="345" name="lastName">
+    <column id="378" parent="345" name="lastName">
       <Position>3</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="378" parent="345" name="password">
+    <column id="379" parent="345" name="password">
       <Position>4</Position>
       <DataType>varchar(25)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="379" parent="345" name="tel">
+    <column id="380" parent="345" name="tel">
       <Position>5</Position>
       <DataType>varchar(20)|0s</DataType>
     </column>
-    <column id="380" parent="345" name="email">
+    <column id="381" parent="345" name="email">
       <Position>6</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="381" parent="345" name="type">
+    <column id="382" parent="345" name="type">
       <Position>7</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="382" parent="345" name="regDate">
+    <column id="383" parent="345" name="regDate">
       <Position>8</Position>
       <DataType>date|0s</DataType>
     </column>
-    <key id="383" parent="345" name="PRIMARY">
+    <key id="384" parent="345" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>userID
 email</ColNames>
