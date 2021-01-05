@@ -51,6 +51,8 @@ public class BorrowLookupManagementLookupController extends HttpServlet {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }else if("filter".equals(action)) {
+            doSearch(request, response);
         }else if("delete".equals(action)){
             doDeleteReservation(request, response);
         }else if("logout".equals(action)){
@@ -88,21 +90,23 @@ public class BorrowLookupManagementLookupController extends HttpServlet {
         String name = request.getParameter("equipment");
         String quantity = request.getParameter("quantity");
         String status = request.getParameter("status");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm/dd/yyyy");
-        LocalDate startDate =  LocalDate.parse(request.getParameter("startDate"));
-        LocalDate dueDate =  LocalDate.parse(request.getParameter("dueDate"),formatter);
+        // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm/dd/yyyy");
+        // LocalDate startDate =  LocalDate.parse(request.getParameter("startDate"));
+        // LocalDate dueDate =  LocalDate.parse(request.getParameter("dueDate"),formatter);
         int userID = Integer.parseInt(request.getParameter("userID"));
         int recordID = Integer.parseInt(request.getParameter("recordID"));
         int equipmentID = equipDB.fetchEquipmentID(name);
-        reservationDB.updateReservation(recordID,equipmentID,status,quantity,startDate,dueDate,userID);
+        reservationDB.updateReservation(recordID,equipmentID,status,quantity,userID);
         doFetchData(request, response);
     }
     public void doSearch(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String name = request.getParameter("equipment");
         String status = request.getParameter("status");
-        int userID = Integer.parseInt(request.getParameter("userID"));
-        reservationDB.searchReservation(userID, status, name);
-        doFetchData(request, response);
+        int userID = 0;
+        ArrayList<RecordBean> rb = reservationDB.searchReservation(userID, status, name);
+        request.setAttribute("reservationList", rb);
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/management/borrow_management.jsp");
+        rd.forward(request, response);
     }
     public void doDeleteReservation(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int recordID = Integer.parseInt(request.getParameter("recordID"));

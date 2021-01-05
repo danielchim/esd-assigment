@@ -89,7 +89,6 @@ public class ReservationController extends HttpServlet {
         UserBean targetUserBean = (UserBean) request.getSession().getAttribute("userInfo");
         ArrayList<RecordBean> rb = reservationDB.searchReservation(targetUserBean.getUserID(),status,equipment);
         request.setAttribute("reservationList", rb);
-        response.sendRedirect("${pageContext.request.contextPath}/reservation");
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/pages/reservation.jsp");
         rd.forward(request, response);
     }

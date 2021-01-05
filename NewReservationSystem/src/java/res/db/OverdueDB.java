@@ -65,6 +65,7 @@ public class OverdueDB extends DBFactory{
             if(userID == 0){
                 preQueryStatement = "SELECT * FROM RECORD INNER JOIN equipinfo pu on RECORD.recordItemID = pu.equipID WHERE userID = NOT NULL AND status = 'overdue' AND equipName LIKE ? ORDER BY recordID";
                 pStmnt = conn.prepareStatement(preQueryStatement);
+                pStmnt.setString(1,"%" + targetEquipment + "%");
             }else{
                 pStmnt = conn.prepareStatement(preQueryStatement);
                 pStmnt.setInt(1, userID);

@@ -157,7 +157,7 @@ public class ReservationDB extends DBFactory{
         String preQueryStatement = "SELECT * FROM RECORD INNER JOIN equipinfo pu on RECORD.recordItemID = pu.equipID WHERE userID = ? AND status = ? AND equipName LIKE ? ORDER BY recordID";
         try{
             conn = getConnection();
-            if(status.equals("")){
+            if(status.equals("") && userID != 0){
                 preQueryStatement = "SELECT * FROM RECORD INNER JOIN equipinfo pu on RECORD.recordItemID = pu.equipID WHERE userID = ? AND (status = 'ready' OR status = 'reserved') AND equipName LIKE ? ORDER BY recordID";
                 pStmnt = conn.prepareStatement(preQueryStatement);
                 pStmnt.setInt(1, userID);
