@@ -7,6 +7,7 @@ package res.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +15,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import res.bean.RecordBean;
 import res.bean.UserBean;
+import res.db.EquipDB;
+import res.db.RecordDB;
+import res.db.ReservationDB;
 import res.db.UserDB;
 
 /**
@@ -25,6 +31,8 @@ import res.db.UserDB;
 public class LoginController extends HttpServlet {
 
     private UserDB db;
+    private EquipDB eDB;
+    private ReservationDB rDB;
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -112,8 +120,11 @@ public class LoginController extends HttpServlet {
         
         if(isValid){
             UserBean bean = db.queryUserByEmail(email);
+
             // store the userInfo to the session
             session.setAttribute("userInfo", bean);
+            ArrayList<RecordBean> recordBean = rDB.fetchReservation(bean.getUserID());
+            request.setAttribute("record", recordBean);
             if(session.getAttribute("originUrl") != null){
                 targetURL = session.getAttribute("originUrl").toString();
                 if(targetURL.equals("")){
@@ -161,6 +172,8 @@ public class LoginController extends HttpServlet {
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
         db = new UserDB(dbUrl, dbUser, dbPassword);
+        eDB = new EquipDB(dbUrl, dbUser, dbPassword);
+        rDB = new ReservationDB(dbUrl, dbUser, dbPassword);
     }
 
     private void redirect(String url, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
