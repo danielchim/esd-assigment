@@ -130,14 +130,16 @@
 <script>
     $(document).ready(function() {
         let target = $("#itemWrapper").html();
-        let alert = "<div class=\"alert alert-primary\" role=\"alert\">\n" + "  Your item " + $(this).find("td").eq(1).text()+ " is ready."+ "</div>"
+        let alert = "<div class=\"alert alert-danger\" role=\"alert\">\n" + "  You got overdue items! "+ "</div>"
+        let alertCheck = 0
         $("#insertReservationItem").click(()=>{
             $("#itemWrapper").append(target);
         });
         $("#reservationTable").each(function() {
-            if($(this).find("td").eq(2).text()==='ready'){
+            if($(this).find("td").eq(2).text()==='overdue' && alertCheck === 0){
                 $("#main-wrapper").prepend(alert);
                 $(".alert").delay(2000).fadeOut('slow');
+                alertCheck++;
             }
         });
 

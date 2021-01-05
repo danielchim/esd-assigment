@@ -59,12 +59,17 @@ public class OverdueDB extends DBFactory{
         Connection conn = null;
         PreparedStatement pStmnt = null;
         boolean isSuccess = false;
+        String preQueryStatement = "SELECT * FROM RECORD INNER JOIN equipinfo pu on RECORD.recordItemID = pu.equipID WHERE userID = ? AND status = 'overdue' AND equipName LIKE ? ORDER BY recordID";
         try{
             conn = getConnection();
-            String preQueryStatement = "SELECT * FROM RECORD INNER JOIN equipinfo pu on RECORD.recordItemID = pu.equipID WHERE userID = ? AND status = 'overdue' AND equipName LIKE ? ORDER BY recordID";
-            pStmnt = conn.prepareStatement(preQueryStatement);
-            pStmnt.setInt(1, userID);
-            pStmnt.setString(2,"%" + targetEquipment + "%");
+            if(userID == 0){
+                preQueryStatement = "SELECT * FROM RECORD INNER JOIN equipinfo pu on RECORD.recordItemID = pu.equipID WHERE userID = NOT NULL AND status = 'overdue' AND equipName LIKE ? ORDER BY recordID";
+                pStmnt = conn.prepareStatement(preQueryStatement);
+            }else{
+                pStmnt = conn.prepareStatement(preQueryStatement);
+                pStmnt.setInt(1, userID);
+                pStmnt.setString(2,"%" + targetEquipment + "%");
+            }
             ResultSet rs = null;
             rs = pStmnt.executeQuery();
             while(rs.next()){

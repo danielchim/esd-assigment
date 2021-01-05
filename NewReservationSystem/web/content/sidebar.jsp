@@ -59,6 +59,7 @@
                 <a class="collapse-item" href="/NewReservationSystem/Inventory">Inventory Management</a>
                 <a class="collapse-item" href="/NewReservationSystem/Account">Account Management</a>
                 <a class="collapse-item" href="/NewReservationSystem/Analytics">Analytics</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/management/overdueManagement">Overdue Management</a>
             </div>
         </div>
     </li>
