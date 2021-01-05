@@ -5,18 +5,14 @@
     <title>SB Admin 2 - Dashboard</title>
 
     <jsp:include page="/content/headconfigs.jsp" />
-    <%@page import="res.bean.EquipBean, java.util.ArrayList" %>
-    <%@ page import="res.bean.RecordBean" %>
+
+    <%@ page import="res.bean.UserBean" %>
     <%!
-        ArrayList<EquipBean> equipList = null;
-        ArrayList<RecordBean> reservationList = null;
+        UserBean userInfo = null;
     %>
     <%
-        if(request.getAttribute("equipList") != null){
-            equipList = (ArrayList<EquipBean>)request.getAttribute("equipList");
-        }
-        if(request.getAttribute("recordList") != null){
-            reservationList = (ArrayList<RecordBean>)request.getAttribute("recordList");
+        if(request.getAttribute("userInfo") != null){
+            userInfo = (UserBean) request.getAttribute("userInfo");
         }
     %>
 </head>
@@ -53,12 +49,12 @@
                                     <div class="row">
                                         <div class="col-10">
                                             <small>Username</small>
-                                            <h3>User1</h3>
+                                            <h3><%=userInfo.getLastName() + " " + userInfo.getFirstName()%></h3>
                                             <small>Email:</small>
-                                            <h3>User1@gmail.com</h3>
+                                            <h3><%=userInfo.getEmail()%></h3>
                                         </div>
                                         <div class="col-1">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"data-target="#editUserModal" userID="">Edit</button>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"data-target="#editUserModal" userID="<%=userInfo.getUserID()%>" firstName="<%=userInfo.getFirstName()%>" lastName="<%=userInfo.getLastName()%>" email="<%=userInfo.getEmail()%>" password="<%=userInfo.getPassword()%>" userPhone="<%=userInfo.getTel()%>">Edit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -77,32 +73,36 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form>
+                                    <form action="${pageContext.request.contextPath}/profile" method="get">
                                         <div class="form-group">
-                                            <label for="username">Username</label>
-                                            <input type="text" class="form-control" id="username" aria-describedby="emailHelp">
+                                            <label for="lastName">Last Name</label>
+                                            <input type="text" class="form-control" id="lastName" name="lastName" aria-describedby="emailHelp">
                                         </div>
                                         <div class="form-group">
-                                            <label for="userMail">Email address</label>
-                                            <input type="email" class="form-control" id="userMail" aria-describedby="emailHelp">
+                                            <label for="firstName">First Name</label>
+                                            <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="emailHelp">
                                         </div>
                                         <div class="form-group">
                                             <label for="userPhone">Phone Number</label>
-                                            <input type="text" class="form-control" id="userPhone" aria-describedby="emailHelp">
+                                            <input type="text" class="form-control" id="userPhone" name="userPhone" value="" aria-describedby="phoneNumber" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userPhone">Email</label>
+                                            <input readonly type="text" class="form-control" id="userMail" name="userMail" value="" aria-describedby="email">
                                         </div>
                                         <div class="form-group">
                                             <label for="userPasswd">Password</label>
-                                            <input type="password" class="form-control" id="userPasswd">
+                                            <input type="password" class="form-control" id="userPasswd" name="userPasswd">
                                         </div>
                                         <div class="form-group">
                                             <label for="userPasswdRepeat">Repeat Password</label>
                                             <input type="password" class="form-control" id="userPasswdRepeat">
                                         </div>
+                                        <input hidden name="action" value="update">
+                                        <input hidden id="userID" name="userID" value="">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
                                     </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
                                 </div>
                             </div>
                         </div>
@@ -136,15 +136,20 @@
             // get information to update quickly to modal view as loading begins
             let opener= event.relatedTarget;//this holds the element who called the modal
             // we get details from attributes
-            let quantity = $(opener).attr('quantity');
             let userID = $(opener).attr('userID');
-            let recordID = $(opener).attr('recordID');
+            let firstName = $(opener).attr('firstName');
+            let lastName = $(opener).attr('lastName');
+            let email = $(opener).attr('email');
+            let password = $(opener).attr('password');
+            let userPhone = $(opener).attr('userPhone');
+            console.log(userPhone);
             // set what we got to our form
-            $("#quantity").attr('value', quantity);
-            $("#editTargetRecordID").attr('value', recordID);
+            $("#lastName").attr('value', lastName);
             $("#userID").attr('value', userID);
-            console.log(recordID);
-            // $("#spinner").text(status);
+            $("#firstName").attr('value', firstName);
+            $("#userPhone").attr('value',userPhone);
+            $("#userMail").attr('value',email);
+            $("#userPasswd").attr('value', password);
         });
     });
 </script>

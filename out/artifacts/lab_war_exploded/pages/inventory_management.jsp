@@ -84,7 +84,7 @@
                                                 <select id="inputAva" class="form-control" name="s-status">
                                                     <option selected value="">Choose...</option>
                                                     <option>Available</option>
-                                                    <option>Occupied</option>
+                                                    <option>Unavailable</option>
                                                     <option>Disabled</option>
                                                 </select>
                                             </div>
@@ -115,10 +115,10 @@
                         <hr class="m-4">
                         
                         <div class="row ml-4">
-                                <button type="button" class="btn btn-outline-success rounded-pill" id="create" data-toggle="modal" data-target="#createModal">
-                                    <i class="fas fa-plus"></i>
-                                    Create
-                                </button>
+                            <button type="button" class="btn btn-outline-success rounded-pill" id="create" data-toggle="modal" data-target="#createModal">
+                                <i class="fas fa-plus"></i>
+                                Create
+                            </button>
                         </div>
                         
                         <!-- Content Row -->

@@ -58,7 +58,7 @@
                 <a class="collapse-item" href="${pageContext.request.contextPath}/management/borrowManagement">Check in / out</a>
                 <a class="collapse-item" href="/NewReservationSystem/Inventory">Inventory Management</a>
                 <a class="collapse-item" href="/NewReservationSystem/Account">Account Management</a>
-                <a class="collapse-item" href="utilities-border.html">Analytics</a>
+                <a class="collapse-item" href="/NewReservationSystem/Analytics">Analytics</a>
             </div>
         </div>
     </li>

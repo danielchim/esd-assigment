@@ -337,4 +337,48 @@ public class UserDB extends DBFactory{
         
         return listWithoutDuplicates;
     }
+
+    public UserBean profileSearchUser(int userID){
+        Connection conn = null;
+        PreparedStatement pStmnt = null;
+        UserBean ub = null;
+        try{
+            conn = getConnection();
+            String preQueryStatement = "SELECT * FROM userinfo WHERE userID = ?";
+            pStmnt = conn.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, userID);
+            ResultSet rs = null;
+            rs = pStmnt.executeQuery();
+            while(rs.next()){
+                ub = new UserBean();
+                ub.setUserID(rs.getInt(1));
+                ub.setFirstName(rs.getString(2));
+                ub.setLastName(rs.getString(3));
+                ub.setPassword(rs.getString(4));
+                ub.setEmail(rs.getString(6));
+                ub.setTel(rs.getString(5));
+                ub.setType(rs.getString(7));
+                ub.setRegisterDate(rs.getDate(8));
+
+                boolean isDisabled = rs.getInt(9) == 1;
+
+                if(isDisabled){
+                    ub.setStatus("Disabled");
+                }else{
+                    ub.setStatus("Active");
+                }
+            }
+            pStmnt.close();
+            conn.close();
+        }catch(SQLException ex){
+            while(ex != null){
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+        return ub;
+    }
+
 }
